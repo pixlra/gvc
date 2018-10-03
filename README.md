@@ -1,2 +1,1 @@
-# gvc
-Generic Video Coding
+# GVC - Generic Video Coding

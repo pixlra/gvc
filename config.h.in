@@ -1,0 +1,35 @@
+/*    This file is a part of GVC project
+ *    Copyright (C) 2014-2018  by Joao Carreira   (jfmcarreira@gmail.com)
+ *                                Luis Lucas      (luisfrlucas@gmail.com)
+ *
+ *    This program is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation; either version 2 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License along
+ *   with this program; if not, write to the Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+/**
+ * \file     config.h.in
+ * \brief    Definition of the building options
+ */
+
+#ifndef __CONFIG_GVC_H__
+#define __CONFIG_GVC_H__
+
+/* Version definition */
+#define GVC_VERSION_MAJOR @GVC_VERSION_MAJOR@
+#define GVC_VERSION_MINOR @GVC_VERSION_MINOR@
+#define GVC_VERSION_PATCH @GVC_VERSION_PATCH@
+#define GVC_VERSION @GVC_VERSION@
+#define GVC_VERSION_STRING "@GVC_VERSION_STRING@"
+
+#endif  // __CONFIG_GVC_H__

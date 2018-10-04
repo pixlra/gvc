@@ -1,0 +1,18 @@
+###
+### CMakeLists for gvc decoder app
+###
+
+INCLUDE_DIRECTORIES(
+  ${CMAKE_BINARY_DIR}
+  ${CMAKE_SOURCE_DIR}
+)
+
+set(GVC_DEC_SRCS
+  main.cpp
+)
+
+ADD_EXECUTABLE( ${PROJECT_NAME}-decoder ${GVC_DEC_SRCS} )
+
+TARGET_LINK_LIBRARIES( ${PROJECT_NAME}-decoder ${PROJECT_LIBRARY} Calyp )
+
+INSTALL(TARGETS ${PROJECT_NAME}-decoder DESTINATION bin )

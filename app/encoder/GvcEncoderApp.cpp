@@ -1,4 +1,4 @@
-/*    This file is a part of GVP project
+/*    This file is a part of GVC project
  *    Copyright (C) 2018  by Ricardo Monteiro
  *                           Joao Carreira
  *

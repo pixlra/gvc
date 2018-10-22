@@ -18,11 +18,11 @@
  */
 
 /**
- * \file     GvcEncoder.cpp
+ * \file     GvcEncFrameUnit.cpp
  * \brief    Main GVC encoder
  */
 
-#include "GvcEncoder.h"
 #include "GvcEncFrameUnit.h"
+#include "GvcEncBlockUnit.h"
 
-GvcEncoder::GvcEncoder() {}
+GvcEncFrameUnit::GvcEncFrameUnit() {}

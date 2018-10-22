@@ -1,4 +1,4 @@
-/*    This file is a part of GVC project
+/*    This file is a part of Calyp project
  *    Copyright (C) 2018  by Ricardo Monteiro
  *                           Joao Carreira
  *
@@ -18,11 +18,21 @@
  */
 
 /**
- * \file     GvcEncoder.cpp
+ * \file     GvcEncFrame.h
  * \brief    Main GVC encoder
  */
 
-#include "GvcEncoder.h"
-#include "GvcEncFrameUnit.h"
+#ifndef __GVCENCBLOCK_H__
+#define __GVCENCBLOCK_H__
 
-GvcEncoder::GvcEncoder() {}
+/**
+ * \class    GvcEncFrameUnit
+ * \brief    Main GVC encoder class
+ */
+class GvcEncBlockUnit
+{
+public:
+  GvcEncBlockUnit();
+};
+
+#endif  // __GVCENCBLOCK_H__

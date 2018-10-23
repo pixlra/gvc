@@ -22,8 +22,6 @@
  * \brief    Decoder app main file
  */
 
-#include <CalypFrame.h>
-#include <CalypStream.h>
 
 int main( int argc, char* argv[] )
 {

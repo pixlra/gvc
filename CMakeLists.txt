@@ -28,9 +28,6 @@ SET( GVC_VERSION "${GVC_VERSION_MAJOR}.${GVC_VERSION_MINOR}.${GVC_VERSION_PATCH}
 # Dependencies
 ######################################################################################
 
-FIND_PACKAGE( Calyp )
-SET_PACKAGE_PROPERTIES(Calyp PROPERTIES URL "https://jfmcarreira.pt/projects/calyp" DESCRIPTION "Calyp library for stream/frame handling" TYPE REQUIRED )
-
 OPTION( BUILD_DOC "Build Documentation" OFF )
 IF( BUILD_DOC )
   FIND_PACKAGE(Doxygen)

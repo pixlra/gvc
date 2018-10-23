@@ -25,6 +25,7 @@
 #include <time.h>
 #include <iostream>
 #include "GvcEncoderApp.h"
+#include "app/common/program_options_lite.h"
 
 int main( int argc, char* argv[] )
 {

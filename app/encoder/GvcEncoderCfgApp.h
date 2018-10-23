@@ -28,6 +28,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 //! \ingroup GvcEncoderApp
 //! \{

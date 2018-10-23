@@ -8,8 +8,9 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(GVC_LIB_SRCS
-  GvcLogger.cpp
   GvcEncoder.cpp
+  GvcEncBlockUnit.cpp
+  GvcEncFrameUnit.cpp
 )
 
 ADD_LIBRARY( ${PROJECT_LIBRARY} STATIC ${GVC_LIB_SRCS} )

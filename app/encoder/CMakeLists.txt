@@ -9,8 +9,9 @@ INCLUDE_DIRECTORIES(
 
 set(GVC_ENC_SRCS
   main.cpp
-  GvcEncoderApp.cpp
-        GvcEncoderCfgApp.cpp)
+    GvcEncoderApp.cpp
+        GvcEncoderCfgApp.cpp
+        ../common/program_options_lite.cpp)
 
 ADD_EXECUTABLE( ${PROJECT_NAME}-encoder ${GVC_ENC_SRCS} )
 

@@ -18,44 +18,54 @@
  */
 
 /**
- * \file     GvcEncoderApp.cpp
+ * \file     GvcEncoderApp.h
  * \brief    Main definition of the GvpEncoderApp
  */
 
 #ifndef __GVCENCODERAPP_H__
 #define __GVCENCODERAPP_H__
 
-#include "CalypDefs.h"
-#include "CalypOptions.h"
+#include "GvcEncoder.h"
+#include "GvcEncoderCfgApp.h"
 
-class CalypOptions;
-class CalypFrame;
-class CalypStream;
-
-class GvpEncoderApp
+/// encoder application class
+class GvcEncoderApp : public GvcEncoderCfgApp
 {
-public:
-  GvpEncoderApp();
-  ~GvpEncoderApp();
-
-  int Open( int argc, char* argv[] );
-  int Process();
-  int Close();
-
 private:
-  bool m_bVerbose;
+  // class interface
+  GvcEncoder                    m_cGvcEnc;                     ///< encoder class
+  //TVideoIOYuv                 m_cTVideoIOYuvInputFile;       ///< input YUV file
+  //TVideoIOYuv                 m_cTVideoIOYuvReconFile;       ///< output reconstruction file
+  //TComList<TComPicYuv*>       m_cListPicYuvRec;              ///< list of reconstruction YUV files
+  int                           m_iFrameRcvd;                  ///< number of received frames
+  unsigned int                  m_totalBytes;
 
-  CalypOptions m_cOptions;
+protected:
+  // initialization
+  //Void  xCreateLib        ();                               ///< create files & encoder class
+  //Void  xInitLibCfg       ();                               ///< initialize internal variables
+  //Void  xInitLib          (Bool isFieldCoding);             ///< initialize encoder class
+  //Void  xDestroyLib       ();                               ///< destroy encoder class
 
-  ClpString m_strInput;
-  ClpString m_strOutput;
-  ClpString m_strResolution;
-  ClpString m_strPelFmt;
-  unsigned int m_uiBitsPerPixel;
-  unsigned int m_uiEndianness;
-  long m_iFrames;
+  /// obtain required buffers
+  //Void xGetBuffer(TComPicYuv*& rpcPicYuvRec);
 
-  CalypStream* m_pcInputStream;
+  /// delete allocated buffers
+  //Void  xDeleteBuffer     ();
+
+  // file I/O
+  //Void xWriteOutput(std::ostream& bitstreamFile, Int iNumEncoded, const std::list<AccessUnit>& accessUnits); ///< write bitstream to file
+  //Void rateStatsAccum(const AccessUnit& au, const std::vector<UInt>& stats);
+  //Void printRateSummary();
+  //Void printChromaFormat();
+
+public:
+    GvcEncoderApp();
+    virtual ~GvcEncoderApp();
+
+    void encode      ();                                    ///< main encoding function
+    GvcEncoder& getGvcEnc  ()   { return  m_cGvcEnc; }      ///< return encoder class pointer reference
+
 };
 
-#endif  // __GVCENCODERAPP_H__
+#endif // __GVCENCODERAPP_H__

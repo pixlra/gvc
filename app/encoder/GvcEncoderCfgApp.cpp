@@ -18,24 +18,45 @@
  */
 
 /**
- * \file     GvcEncoderApp.cpp
- * \brief    Main definition of the GvpEncoderApp
+ * \file     GvcEncoderCfgApp.cpp
+ * \brief    Main definition of the GvpEncoderCfgApp
  */
 
-#include "GvcEncoderApp.h"
-#include "GvcEncoder.h"
+#include "GvcEncoderCfgApp.h"
 
-GvcEncoderApp::GvcEncoderApp()
-{
-    m_iFrameRcvd = 0;
-    m_totalBytes = 0;
-}
-
-GvcEncoderApp::~GvcEncoderApp()
+GvcEncoderCfgApp::GvcEncoderCfgApp()
 {
 }
 
-void GvcEncoderApp::encode()
+GvcEncoderCfgApp::~GvcEncoderCfgApp()
 {
-    std::cout << "encoder" << std::endl;
+}
+
+void GvcEncoderCfgApp::create()
+{
+}
+
+void GvcEncoderCfgApp::destroy()
+{
+}
+
+bool GvcEncoderCfgApp::parseCfg( int argc, char* argv[] )
+{
+    std::cout << "parseCfg" << std::endl;
+    return true;
+}
+
+void  GvcEncoderCfgApp::xCheckParameter()
+{
+
+}
+
+void  GvcEncoderCfgApp::xPrintParameter()
+{
+
+}
+
+void  GvcEncoderCfgApp::xPrintUsage()
+{
+
 }

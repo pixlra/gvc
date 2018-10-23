@@ -22,34 +22,36 @@
  * \brief    Encoder app main file
  */
 
-#include <CalypFrame.h>
-#include <CalypStream.h>
+#include <time.h>
+#include <iostream>
 #include "GvcEncoderApp.h"
 
 int main( int argc, char* argv[] )
 {
-  GvpEncoderApp CalypToolsApp;
+    GvcEncoderApp  cGvcEncoderApp;
 
-  int iRet = CalypToolsApp.Open( argc, argv );
-  if( iRet == 1 )
-  {
+    cGvcEncoderApp.create();
+
+    // parse configuration
+    if(!cGvcEncoderApp.parseCfg( argc, argv ))
+    {
+        cGvcEncoderApp.destroy();
+        return 1;
+    }
+
+    // starting time
+    double dResult;
+    clock_t lBefore = clock();
+
+    // call encoding function
+    cGvcEncoderApp.encode();
+
+    // ending time
+    dResult = (double)(clock()-lBefore) / CLOCKS_PER_SEC;
+    printf("\n Total Time: %12.3f sec.\n", dResult);
+
+    // destroy application encoder class
+    cGvcEncoderApp.destroy();
+
     return 0;
-  }
-  if( iRet < 0 )
-  {
-    printf( "Exiting with error \n" );
-    return 1;
-  }
-
-  if( CalypToolsApp.Process() < 0 )
-  {
-    printf( "Exiting with error \n" );
-    return 1;
-  }
-
-  if( CalypToolsApp.Close() < 0 )
-  {
-    printf( "Exiting with error \n" );
-    return 1;
-  }
 }

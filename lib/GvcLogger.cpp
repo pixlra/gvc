@@ -32,28 +32,28 @@ static enum GVC_LOG_LEVEL Log_Level = GVC_LOG_ERROR;
 
 void GvcLogger::SetReportLevel( enum GVC_LOG_LEVEL level )
 {
-  Log_Level = level;
+	Log_Level = level;
 }
 
 enum GVC_LOG_LEVEL& GvcLogger::ReportingLevel()
 {
-  return Log_Level;
+	return Log_Level;
 }
 
-std::ostringstream& GvcLogger::Get(enum GVC_LOG_LEVEL level)
+std::ostringstream& GvcLogger::Get( enum GVC_LOG_LEVEL level )
 {
-//   os << "- " << std::chrono::system_clock::now();
-//   os << " " << ToString(level) << ": ";
-//   os << std::string(level > logDEBUG ? 0 : level - logDEBUG, '\t');
-   messageLevel = level;
-   return os;
+	//   os << "- " << std::chrono::system_clock::now();
+	//   os << " " << ToString(level) << ": ";
+	//   os << std::string(level > logDEBUG ? 0 : level - logDEBUG, '\t');
+	messageLevel = level;
+	return os;
 }
 GvcLogger::~GvcLogger()
 {
-   if (messageLevel >= GvcLogger::ReportingLevel())
-   {
-      os << std::endl;
-      fprintf(stderr, "%s", os.str().c_str());
-      fflush(stderr);
-   }
+	if( messageLevel >= GvcLogger::ReportingLevel() )
+	{
+		os << std::endl;
+		fprintf( stderr, "%s", os.str().c_str() );
+		fflush( stderr );
+	}
 }

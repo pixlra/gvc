@@ -31,41 +31,40 @@
 /// encoder application class
 class GvcEncoderApp : public GvcEncoderCfgApp
 {
-private:
-  // class interface
-  GvcEncoder                    m_cGvcEnc;                     ///< encoder class
-  //TVideoIOYuv                 m_cTVideoIOYuvInputFile;       ///< input YUV file
-  //TVideoIOYuv                 m_cTVideoIOYuvReconFile;       ///< output reconstruction file
-  //TComList<TComPicYuv*>       m_cListPicYuvRec;              ///< list of reconstruction YUV files
-  int                           m_iFrameRcvd;                  ///< number of received frames
-  unsigned int                  m_totalBytes;
+  private:
+	// class interface
+	GvcEncoder m_cGvcEnc;  ///< encoder class
+	//TVideoIOYuv                 m_cTVideoIOYuvInputFile;       ///< input YUV file
+	//TVideoIOYuv                 m_cTVideoIOYuvReconFile;       ///< output reconstruction file
+	//TComList<TComPicYuv*>       m_cListPicYuvRec;              ///< list of reconstruction YUV files
+	int m_iFrameRcvd;  ///< number of received frames
+	unsigned int m_totalBytes;
 
-protected:
-  // initialization
-  //Void  xCreateLib        ();                               ///< create files & encoder class
-  //Void  xInitLibCfg       ();                               ///< initialize internal variables
-  //Void  xInitLib          (Bool isFieldCoding);             ///< initialize encoder class
-  //Void  xDestroyLib       ();                               ///< destroy encoder class
+  protected:
+	// initialization
+	//Void  xCreateLib        ();                               ///< create files & encoder class
+	//Void  xInitLibCfg       ();                               ///< initialize internal variables
+	//Void  xInitLib          (Bool isFieldCoding);             ///< initialize encoder class
+	//Void  xDestroyLib       ();                               ///< destroy encoder class
 
-  /// obtain required buffers
-  //Void xGetBuffer(TComPicYuv*& rpcPicYuvRec);
+	/// obtain required buffers
+	//Void xGetBuffer(TComPicYuv*& rpcPicYuvRec);
 
-  /// delete allocated buffers
-  //Void  xDeleteBuffer     ();
+	/// delete allocated buffers
+	//Void  xDeleteBuffer     ();
 
-  // file I/O
-  //Void xWriteOutput(std::ostream& bitstreamFile, Int iNumEncoded, const std::list<AccessUnit>& accessUnits); ///< write bitstream to file
-  //Void rateStatsAccum(const AccessUnit& au, const std::vector<UInt>& stats);
-  //Void printRateSummary();
-  //Void printChromaFormat();
+	// file I/O
+	//Void xWriteOutput(std::ostream& bitstreamFile, Int iNumEncoded, const std::list<AccessUnit>& accessUnits); ///< write bitstream to file
+	//Void rateStatsAccum(const AccessUnit& au, const std::vector<UInt>& stats);
+	//Void printRateSummary();
+	//Void printChromaFormat();
 
-public:
-    GvcEncoderApp();
-    virtual ~GvcEncoderApp();
+  public:
+	GvcEncoderApp();
+	virtual ~GvcEncoderApp();
 
-    void encode      ();                                    ///< main encoding function
-    GvcEncoder& getGvcEnc  ()   { return  m_cGvcEnc; }      ///< return encoder class pointer reference
-
+	void encode();                                 ///< main encoding function
+	GvcEncoder& getGvcEnc() { return m_cGvcEnc; }  ///< return encoder class pointer reference
 };
 
-#endif // __GVCENCODERAPP_H__
+#endif  // __GVCENCODERAPP_H__

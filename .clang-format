@@ -58,7 +58,7 @@ IncludeCategories:
     Priority:        3
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IndentCaseLabels: false
-IndentWidth:     2
+IndentWidth:     4
 IndentWrappedFunctionNames: false
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true
@@ -67,7 +67,7 @@ MacroBlockBegin: ''
 MacroBlockEnd:   ''
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
-ObjCBlockIndentWidth: 2
+ObjCBlockIndentWidth: 4
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: false
 PenaltyBreakBeforeFirstCallParameter: 1
@@ -91,7 +91,7 @@ SortIncludes:    true
 SpacesInParentheses: true
 SpacesInSquareBrackets: false
 Standard:        Auto
-TabWidth:        2
-UseTab:          Never
+TabWidth:        4
+UseTab:          ForIndentation
 ...
 

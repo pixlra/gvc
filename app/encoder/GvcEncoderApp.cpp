@@ -27,8 +27,8 @@
 
 GvcEncoderApp::GvcEncoderApp()
 {
-    m_iFrameRcvd = 0;
-    m_totalBytes = 0;
+	m_iFrameRcvd = 0;
+	m_totalBytes = 0;
 }
 
 GvcEncoderApp::~GvcEncoderApp()
@@ -37,5 +37,5 @@ GvcEncoderApp::~GvcEncoderApp()
 
 void GvcEncoderApp::encode()
 {
-    std::cout << "encoder" << std::endl;
+	std::cout << "encoder" << std::endl;
 }

@@ -1,4 +1,4 @@
-/*    This file is a part of GVP project
+/*    This file is a part of GVC project
  *    Copyright (C) 2018  by Ricardo Monteiro
  *                           Joao Carreira
  *
@@ -25,34 +25,34 @@
 #include <time.h>
 #include <iostream>
 #include "GvcEncoderApp.h"
-#include "app/common/program_options_lite.h"
+#include "program_options_lite.h"
 
 int main( int argc, char* argv[] )
 {
-    GvcEncoderApp  cGvcEncoderApp;
+	GvcEncoderApp cGvcEncoderApp;
 
-    cGvcEncoderApp.create();
+	cGvcEncoderApp.create();
 
-    // parse configuration
-    if(!cGvcEncoderApp.parseCfg( argc, argv ))
-    {
-        cGvcEncoderApp.destroy();
-        return 1;
-    }
+	// parse configuration
+	if( !cGvcEncoderApp.parseCfg( argc, argv ) )
+	{
+		cGvcEncoderApp.destroy();
+		return 1;
+	}
 
-    // starting time
-    double dResult;
-    clock_t lBefore = clock();
+	// starting time
+	double dResult;
+	clock_t lBefore = clock();
 
-    // call encoding function
-    cGvcEncoderApp.encode();
+	// call encoding function
+	cGvcEncoderApp.encode();
 
-    // ending time
-    dResult = (double)(clock()-lBefore) / CLOCKS_PER_SEC;
-    printf("\n Total Time: %12.3f sec.\n", dResult);
+	// ending time
+	dResult = (double)( clock() - lBefore ) / CLOCKS_PER_SEC;
+	printf( "\n Total Time: %12.3f sec.\n", dResult );
 
-    // destroy application encoder class
-    cGvcEncoderApp.destroy();
+	// destroy application encoder class
+	cGvcEncoderApp.destroy();
 
-    return 0;
+	return 0;
 }

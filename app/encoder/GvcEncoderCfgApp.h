@@ -25,39 +25,39 @@
 #ifndef __GVCENCODERCFGAPP__
 #define __GVCENCODERCFGAPP__
 
-#include <vector>
-#include <string>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 //! \ingroup GvcEncoderApp
 //! \{
 class GvcEncoderCfgApp
 {
-protected:
-    // file I/O
-    std::string m_inputFileName;                                ///< source file name
-    std::string m_bitstreamFileName;                            ///< output bitstream file
-    std::string m_reconFileName;                                ///< output reconstruction file
+  protected:
+	// file I/O
+	std::string m_inputFileName;      ///< source file name
+	std::string m_bitstreamFileName;  ///< output bitstream file
+	std::string m_reconFileName;      ///< output reconstruction file
 
-    // source specification
-    int       m_iSourceWidth;                                   ///< source width in pixel
-    int       m_iSourceHeight;                                  ///< source height in pixel
+	// source specification
+	int m_iSourceWidth;   ///< source width in pixel
+	int m_iSourceHeight;  ///< source height in pixel
 
-    // coding quality
-    int       m_iQP;                                            ///< QP value of key-picture
+	// coding quality
+	int m_iQP;  ///< QP value of key-picture
 
-    // internal member functions
-    void  xCheckParameter ();                                   ///< check validity of configuration values
-    void  xPrintParameter ();                                   ///< print configuration values
-    void  xPrintUsage     ();                                   ///< print usage
-public:
-    GvcEncoderCfgApp();
-    virtual ~GvcEncoderCfgApp();
-    void  create    ();                                         ///< create option handling class
-    void  destroy   ();                                         ///< destroy option handling class
-    bool  parseCfg  ( int argc, char* argv[] );                 ///< parse configuration file to fill member variables
+	// internal member functions
+	void xCheckParameter();  ///< check validity of configuration values
+	void xPrintParameter();  ///< print configuration values
+	void xPrintUsage();      ///< print usage
+  public:
+	GvcEncoderCfgApp();
+	virtual ~GvcEncoderCfgApp();
+	void create();                            ///< create option handling class
+	void destroy();                           ///< destroy option handling class
+	bool parseCfg( int argc, char* argv[] );  ///< parse configuration file to fill member variables
 
-};// END CLASS DEFINITION GvcEncoderCfgApp
+};  // END CLASS DEFINITION GvcEncoderCfgApp
 //! \}
-#endif // __GVCENCODERCFGAPP__
+#endif  // __GVCENCODERCFGAPP__

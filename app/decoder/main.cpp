@@ -22,10 +22,9 @@
  * \brief    Decoder app main file
  */
 
-
 int main( int argc, char* argv[] )
 {
-  int iRet = 0;
+	int iRet = 0;
 
-  return iRet;
+	return iRet;
 }

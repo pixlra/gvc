@@ -31,8 +31,8 @@
  */
 class GvcEncFrameUnit
 {
-public:
-  GvcEncFrameUnit();
+  public:
+	GvcEncFrameUnit();
 };
 
 #endif  // __GVCENCFRAME_H__

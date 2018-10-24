@@ -31,8 +31,8 @@
  */
 class GvcEncoder
 {
-public:
-  GvcEncoder();
+  public:
+	GvcEncoder();
 };
 
 #endif  // __GVCENCODER_H__

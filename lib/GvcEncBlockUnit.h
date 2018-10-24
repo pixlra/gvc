@@ -31,8 +31,8 @@
  */
 class GvcEncBlockUnit
 {
-public:
-  GvcEncBlockUnit();
+  public:
+	GvcEncBlockUnit();
 };
 
 #endif  // __GVCENCBLOCK_H__

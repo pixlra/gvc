@@ -29,14 +29,16 @@
 
 enum GVC_LOG_LEVEL
 {
-  GVC_LOG_ERROR = 0,
-  GVC_LOG_WARNINGS = 1,
-  GVC_LOG_INFO = 2,
+	GVC_LOG_ERROR = 0,
+	GVC_LOG_WARNINGS = 1,
+	GVC_LOG_INFO = 2,
 };
 
-#define LOG(level) \
-if (level > GvcLogger::ReportingLevel()) ; \
-else GvcLogger().Get(level)
+#define LOG( level )                          \
+	if( level > GvcLogger::ReportingLevel() ) \
+		;                                     \
+	else                                      \
+		GvcLogger().Get( level )
 
 /**
  * \class    GvcLogger
@@ -44,20 +46,24 @@ else GvcLogger().Get(level)
  */
 class GvcLogger
 {
-public:
-  GvcLogger() {}
-   virtual ~GvcLogger();
-   std::ostringstream& Get(enum GVC_LOG_LEVEL level = GVC_LOG_ERROR);
-public:
-   static void SetReportLevel( enum GVC_LOG_LEVEL level );
-   static enum GVC_LOG_LEVEL& ReportingLevel();
-protected:
-   std::ostringstream os;
-private:
-   GvcLogger(const GvcLogger&);
-   GvcLogger& operator =(const GvcLogger&);
-private:
-   enum GVC_LOG_LEVEL messageLevel;
+  public:
+	GvcLogger() {}
+	virtual ~GvcLogger();
+	std::ostringstream& Get( enum GVC_LOG_LEVEL level = GVC_LOG_ERROR );
+
+  public:
+	static void SetReportLevel( enum GVC_LOG_LEVEL level );
+	static enum GVC_LOG_LEVEL& ReportingLevel();
+
+  protected:
+	std::ostringstream os;
+
+  private:
+	GvcLogger( const GvcLogger& );
+	GvcLogger& operator=( const GvcLogger& );
+
+  private:
+	enum GVC_LOG_LEVEL messageLevel;
 };
 
 #endif  // __GVCLOGGER_H__

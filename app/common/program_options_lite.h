@@ -31,10 +31,10 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include <iostream>
-#include <sstream>
-#include <string>
 #include <list>
 #include <map>
+#include <sstream>
+#include <string>
 
 #ifndef __PROGRAM_OPTIONS_LITE__
 #define __PROGRAM_OPTIONS_LITE__
@@ -42,203 +42,208 @@
 //! \ingroup TAppCommon
 //! \{
 
-
 namespace df
 {
-  namespace program_options_lite
-  {
-    struct Options;
+namespace program_options_lite
+{
+struct Options;
 
-    struct ParseFailure : public std::exception
-    {
-      ParseFailure(std::string arg0, std::string val0) throw()
-      : arg(arg0), val(val0)
-      {}
+struct ParseFailure : public std::exception
+{
+	ParseFailure( std::string arg0, std::string val0 ) throw()
+	    : arg( arg0 ), val( val0 )
+	{
+	}
 
-      ~ParseFailure() throw() {};
+	~ParseFailure() throw(){};
 
-      std::string arg;
-      std::string val;
+	std::string arg;
+	std::string val;
 
-      const char* what() const throw() { return "Option Parse Failure"; }
-    };
+	const char* what() const throw() { return "Option Parse Failure"; }
+};
 
-    struct ErrorReporter
-    {
-      ErrorReporter() : is_errored(0) {}
-      virtual ~ErrorReporter() {}
-      virtual std::ostream& error(const std::string& where);
-      virtual std::ostream& warn(const std::string& where);
-      bool is_errored;
-    };
+struct ErrorReporter
+{
+	ErrorReporter()
+	    : is_errored( 0 ) {}
+	virtual ~ErrorReporter() {}
+	virtual std::ostream& error( const std::string& where );
+	virtual std::ostream& warn( const std::string& where );
+	bool is_errored;
+};
 
-    extern ErrorReporter default_error_reporter;
+extern ErrorReporter default_error_reporter;
 
-    void doHelp(std::ostream& out, Options& opts, unsigned columns = 80);
-    std::list<const char*> scanArgv(Options& opts, unsigned argc, const char* argv[], ErrorReporter& error_reporter = default_error_reporter);
-    void setDefaults(Options& opts);
-    void parseConfigFile(Options& opts, const std::string& filename, ErrorReporter& error_reporter = default_error_reporter);
+void doHelp( std::ostream& out, Options& opts, unsigned columns = 80 );
+std::list<const char*> scanArgv( Options& opts, unsigned argc, const char* argv[], ErrorReporter& error_reporter = default_error_reporter );
+void setDefaults( Options& opts );
+void parseConfigFile( Options& opts, const std::string& filename, ErrorReporter& error_reporter = default_error_reporter );
 
-    /** OptionBase: Virtual base class for storing information relating to a
+/** OptionBase: Virtual base class for storing information relating to a
      * specific option This base class describes common elements.  Type specific
      * information should be stored in a derived class. */
-    struct OptionBase
-    {
-      OptionBase(const std::string& name, const std::string& desc)
-      : opt_string(name), opt_desc(desc)
-      {};
+struct OptionBase
+{
+	OptionBase( const std::string& name, const std::string& desc )
+	    : opt_string( name ), opt_desc( desc ){};
 
-      virtual ~OptionBase() {}
+	virtual ~OptionBase() {}
 
-      /* parse argument arg, to obtain a value for the option */
-      virtual void parse(const std::string& arg, ErrorReporter&) = 0;
-      /* set the argument to the default value */
-      virtual void setDefault() = 0;
+	/* parse argument arg, to obtain a value for the option */
+	virtual void parse( const std::string& arg, ErrorReporter& ) = 0;
+	/* set the argument to the default value */
+	virtual void setDefault() = 0;
 
-      std::string opt_string;
-      std::string opt_desc;
-    };
+	std::string opt_string;
+	std::string opt_desc;
+};
 
-    /** Type specific option storage */
-    template<typename T>
-    struct Option : public OptionBase
-    {
-      Option(const std::string& name, T& storage, T default_val, const std::string& desc)
-      : OptionBase(name, desc), opt_storage(storage), opt_default_val(default_val)
-      {}
+/** Type specific option storage */
+template <typename T>
+struct Option : public OptionBase
+{
+	Option( const std::string& name, T& storage, T default_val, const std::string& desc )
+	    : OptionBase( name, desc ), opt_storage( storage ), opt_default_val( default_val )
+	{
+	}
 
-      void parse(const std::string& arg, ErrorReporter&);
+	void parse( const std::string& arg, ErrorReporter& );
 
-      void setDefault()
-      {
-        opt_storage = opt_default_val;
-      }
+	void setDefault()
+	{
+		opt_storage = opt_default_val;
+	}
 
-      T& opt_storage;
-      T opt_default_val;
-    };
+	T& opt_storage;
+	T opt_default_val;
+};
 
-    /* Generic parsing */
-    template<typename T>
-    inline void
-    Option<T>::parse(const std::string& arg, ErrorReporter&)
-    {
-      std::istringstream arg_ss (arg,std::istringstream::in);
-      arg_ss.exceptions(std::ios::failbit);
-      try
-      {
-        arg_ss >> opt_storage;
-      }
-      catch (...)
-      {
-        throw ParseFailure(opt_string, arg);
-      }
-    }
+/* Generic parsing */
+template <typename T>
+inline void
+Option<T>::parse( const std::string& arg, ErrorReporter& )
+{
+	std::istringstream arg_ss( arg, std::istringstream::in );
+	arg_ss.exceptions( std::ios::failbit );
+	try
+	{
+		arg_ss >> opt_storage;
+	}
+	catch( ... )
+	{
+		throw ParseFailure( opt_string, arg );
+	}
+}
 
-    /* string parsing is specialized -- copy the whole string, not just the
+/* string parsing is specialized -- copy the whole string, not just the
      * first word */
-    template<>
-    inline void
-    Option<std::string>::parse(const std::string& arg, ErrorReporter&)
-    {
-      opt_storage = arg;
-    }
+template <>
+inline void
+Option<std::string>::parse( const std::string& arg, ErrorReporter& )
+{
+	opt_storage = arg;
+}
 
-    /** Option class for argument handling using a user provided function */
-    struct OptionFunc : public OptionBase
-    {
-      typedef void (Func)(Options&, const std::string&, ErrorReporter&);
+/** Option class for argument handling using a user provided function */
+struct OptionFunc : public OptionBase
+{
+	typedef void( Func )( Options&, const std::string&, ErrorReporter& );
 
-      OptionFunc(const std::string& name, Options& parent_, Func *func_, const std::string& desc)
-      : OptionBase(name, desc), parent(parent_), func(func_)
-      {}
+	OptionFunc( const std::string& name, Options& parent_, Func* func_, const std::string& desc )
+	    : OptionBase( name, desc ), parent( parent_ ), func( func_ )
+	{
+	}
 
-      void parse(const std::string& arg, ErrorReporter& error_reporter)
-      {
-        func(parent, arg, error_reporter);
-      }
+	void parse( const std::string& arg, ErrorReporter& error_reporter )
+	{
+		func( parent, arg, error_reporter );
+	}
 
-      void setDefault()
-      {
-        return;
-      }
+	void setDefault()
+	{
+		return;
+	}
 
-    private:
-      Options& parent;
-      Func* func;
-    };
+  private:
+	Options& parent;
+	Func* func;
+};
 
-    class OptionSpecific;
-    struct Options
-    {
-      ~Options();
+class OptionSpecific;
+struct Options
+{
+	~Options();
 
-      OptionSpecific addOptions();
+	OptionSpecific addOptions();
 
-      struct Names
-      {
-        Names() : opt(0) {};
-        ~Names()
-        {
-          if (opt)
-          {
-            delete opt;
-          }
-        }
-        std::list<std::string> opt_long;
-        std::list<std::string> opt_short;
-        OptionBase* opt;
-      };
+	struct Names
+	{
+		Names()
+		    : opt( 0 ){};
+		~Names()
+		{
+			if( opt )
+			{
+				delete opt;
+			}
+		}
+		std::list<std::string> opt_long;
+		std::list<std::string> opt_short;
+		OptionBase* opt;
+	};
 
-      void addOption(OptionBase *opt);
+	void addOption( OptionBase* opt );
 
-      typedef std::list<Names*> NamesPtrList;
-      NamesPtrList opt_list;
+	typedef std::list<Names*> NamesPtrList;
+	NamesPtrList opt_list;
 
-      typedef std::map<std::string, NamesPtrList> NamesMap;
-      NamesMap opt_long_map;
-      NamesMap opt_short_map;
-    };
+	typedef std::map<std::string, NamesPtrList> NamesMap;
+	NamesMap opt_long_map;
+	NamesMap opt_short_map;
+};
 
-    /* Class with templated overloaded operator(), for use by Options::addOptions() */
-    class OptionSpecific
-    {
-    public:
-      OptionSpecific(Options& parent_) : parent(parent_) {}
+/* Class with templated overloaded operator(), for use by Options::addOptions() */
+class OptionSpecific
+{
+  public:
+	OptionSpecific( Options& parent_ )
+	    : parent( parent_ ) {}
 
-      /**
+	/**
        * Add option described by name to the parent Options list,
        *   with storage for the option's value
        *   with default_val as the default value
        *   with desc as an optional help description
        */
-      template<typename T>
-      OptionSpecific&
-      operator()(const std::string& name, T& storage, T default_val, const std::string& desc = "")
-      {
-        parent.addOption(new Option<T>(name, storage, default_val, desc));
-        return *this;
-      }
+	template <typename T>
+	OptionSpecific&
+	operator()( const std::string& name, T& storage, T default_val, const std::string& desc = "" )
+	{
+		parent.addOption( new Option<T>( name, storage, default_val, desc ) );
+		return *this;
+	}
 
-      /**
+	/**
        * Add option described by name to the parent Options list,
        *   with desc as an optional help description
        * instead of storing the value somewhere, a function of type
        * OptionFunc::Func is called.  It is upto this function to correctly
        * handle evaluating the option's value.
        */
-      OptionSpecific&
-      operator()(const std::string& name, OptionFunc::Func *func, const std::string& desc = "")
-      {
-        parent.addOption(new OptionFunc(name, parent, func, desc));
-        return *this;
-      }
-    private:
-      Options& parent;
-    };
+	OptionSpecific&
+	operator()( const std::string& name, OptionFunc::Func* func, const std::string& desc = "" )
+	{
+		parent.addOption( new OptionFunc( name, parent, func, desc ) );
+		return *this;
+	}
 
-  } /* namespace: program_options_lite */
-} /* namespace: df */
+  private:
+	Options& parent;
+};
+
+}  // namespace program_options_lite
+}  // namespace df
 
 //! \}
 

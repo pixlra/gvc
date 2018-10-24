@@ -22,9 +22,11 @@
  * \brief    Encoder app main file
  */
 
+#include <lib/GvcLogger.h>
 #include <time.h>
 #include <iostream>
 #include "GvcEncoderApp.h"
+#include "lib/GvcLogger.h"
 #include "program_options_lite.h"
 
 int main( int argc, char* argv[] )
@@ -32,6 +34,8 @@ int main( int argc, char* argv[] )
 	GvcEncoderApp cGvcEncoderApp;
 
 	cGvcEncoderApp.create();
+	GvcLogger::SetReportLevel( GVC_LOG_INFO );
+	LOG( GVC_LOG_INFO ) << "created cGvcEncoderApp object" << std::endl;
 
 	// parse configuration
 	if( !cGvcEncoderApp.parseCfg( argc, argv ) )

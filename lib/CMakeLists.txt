@@ -11,6 +11,7 @@ SET(GVC_LIB_SRCS
   GvcEncoder.cpp
   GvcEncBlockUnit.cpp
   GvcEncFrameUnit.cpp
+  GvcLogger.cpp
 )
 
 ADD_LIBRARY( ${PROJECT_LIBRARY} STATIC ${GVC_LIB_SRCS} )

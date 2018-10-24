@@ -28,7 +28,7 @@
 #include <cstring>
 #include <iostream>
 
-static enum GVC_LOG_LEVEL Log_Level = GVC_LOG_ERROR;
+static enum GVC_LOG_LEVEL Log_Level = GVC_LOG_INFO;
 
 void GvcLogger::SetReportLevel( enum GVC_LOG_LEVEL level )
 {

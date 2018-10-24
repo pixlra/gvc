@@ -24,14 +24,18 @@
 
 #include <time.h>
 #include <iostream>
+#include <lib/GvcLogger.h>
 #include "GvcEncoderApp.h"
 #include "app/common/program_options_lite.h"
+#include "lib/GvcLogger.h"
 
 int main( int argc, char* argv[] )
 {
     GvcEncoderApp  cGvcEncoderApp;
 
     cGvcEncoderApp.create();
+    GvcLogger::SetReportLevel(GVC_LOG_INFO);
+    LOG(GVC_LOG_INFO) << "created cGvcEncoderApp object" << std::endl;
 
     // parse configuration
     if(!cGvcEncoderApp.parseCfg( argc, argv ))

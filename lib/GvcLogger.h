@@ -29,13 +29,14 @@
 
 enum GVC_LOG_LEVEL
 {
-  GVC_LOG_ERROR = 0,
-  GVC_LOG_WARNINGS = 1,
-  GVC_LOG_INFO = 2,
+    GVC_LOG_DEBUG,
+    GVC_LOG_INFO,
+    GVC_LOG_WARNINGS,
+    GVC_LOG_ERROR,
 };
 
 #define LOG(level) \
-if (level > GvcLogger::ReportingLevel()) ; \
+if (level >= GvcLogger::ReportingLevel()) ; \
 else GvcLogger().Get(level)
 
 /**

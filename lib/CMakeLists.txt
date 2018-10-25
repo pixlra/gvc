@@ -12,9 +12,14 @@ SET(GVC_LIB_SRCS
   GvcEncBlockUnit.cpp
   GvcEncFrameUnit.cpp
   GvcLogger.cpp
-)
+  GvcFrameUnit.cpp
+  GvcFrameUnitYuv.cpp
+  GvcFrameUnitSym.cpp
+  GvcBlockUnit.cpp
+  TVideoIOYuv.cpp
+  TComChromaFormat.cpp)
 
-ADD_LIBRARY( ${PROJECT_LIBRARY} STATIC ${GVC_LIB_SRCS} )
+ADD_LIBRARY( ${PROJECT_LIBRARY} STATIC ${GVC_LIB_SRCS})
 
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_LIBRARY}
     PUBLIC

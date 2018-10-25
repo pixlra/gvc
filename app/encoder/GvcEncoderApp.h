@@ -27,6 +27,8 @@
 
 #include "GvcEncoder.h"
 #include "GvcEncoderCfgApp.h"
+#include "TVideoIOYuv.h"
+#include "GvcFrameUnitYuv.h"
 
 /// encoder application class
 class GvcEncoderApp : public GvcEncoderCfgApp
@@ -34,30 +36,28 @@ class GvcEncoderApp : public GvcEncoderCfgApp
   private:
 	// class interface
 	GvcEncoder m_cGvcEnc;  ///< encoder class
-	//TVideoIOYuv                 m_cTVideoIOYuvInputFile;       ///< input YUV file
-	//TVideoIOYuv                 m_cTVideoIOYuvReconFile;       ///< output reconstruction file
-	//TComList<TComPicYuv*>       m_cListPicYuvRec;              ///< list of reconstruction YUV files
+	TVideoIOYuv                 m_cTVideoIOYuvInputFile;       ///< input YUV file
+	TVideoIOYuv                 m_cTVideoIOYuvReconFile;       ///< output reconstruction file
+
 	int m_iFrameRcvd;  ///< number of received frames
 	unsigned int m_totalBytes;
 
   protected:
 	// initialization
-	//Void  xCreateLib        ();                               ///< create files & encoder class
-	//Void  xInitLibCfg       ();                               ///< initialize internal variables
-	//Void  xInitLib          (Bool isFieldCoding);             ///< initialize encoder class
-	//Void  xDestroyLib       ();                               ///< destroy encoder class
+	void  xCreateLib        ();                               ///< create files & encoder class
+	void  xInitLibCfg       ();                               ///< initialize internal variables
+	void  xInitLib          ();					              ///< initialize encoder class
+	void  xDestroyLib       ();                               ///< destroy encoder class
 
 	/// obtain required buffers
-	//Void xGetBuffer(TComPicYuv*& rpcPicYuvRec);
+	void xGetBuffer(GvcFrameUnitYuv*& rpcFrameYuvRec);
 
 	/// delete allocated buffers
-	//Void  xDeleteBuffer     ();
+	void  xDeleteBuffer     ();
 
 	// file I/O
-	//Void xWriteOutput(std::ostream& bitstreamFile, Int iNumEncoded, const std::list<AccessUnit>& accessUnits); ///< write bitstream to file
-	//Void rateStatsAccum(const AccessUnit& au, const std::vector<UInt>& stats);
-	//Void printRateSummary();
-	//Void printChromaFormat();
+	void xWriteOutput(std::ostream& bitstreamFile, int iNumEncoded); ///< write bitstream to file
+	void printRateSummary();
 
   public:
 	GvcEncoderApp();

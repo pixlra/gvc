@@ -34,8 +34,8 @@ int main( int argc, char* argv[] )
 	GvcEncoderApp cGvcEncoderApp;
 
 	cGvcEncoderApp.create();
-	GvcLogger::SetReportLevel( GVC_LOG_INFO );
-	LOG( GVC_LOG_INFO ) << "created cGvcEncoderApp object" << std::endl;
+	//GvcLogger::SetReportLevel( GVC_LOG_INFO );
+	//LOG( GVC_LOG_INFO ) << "created cGvcEncoderApp object" << std::endl;
 
 	// parse configuration
 	if( !cGvcEncoderApp.parseCfg( argc, argv ) )

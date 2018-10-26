@@ -25,4 +25,10 @@
 #include "GvcEncoder.h"
 #include "GvcEncFrameUnit.h"
 
-GvcEncoder::GvcEncoder() {}
+GvcEncoder::GvcEncoder()
+{
+}
+
+GvcEncoder::~GvcEncoder()
+{
+}

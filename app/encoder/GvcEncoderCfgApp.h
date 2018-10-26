@@ -47,14 +47,8 @@ class GvcEncoderCfgApp
 	int m_iSourceHeight;  ///< source height in pixel
 	int m_aiPad[2];                                       ///< number of padded pixels for width and height
 	int m_framesToBeEncoded;
-	ChromaFormat m_InputChromaFormatIDC;
-	ChromaFormat m_chromaFormatIDC;
-	bool      m_bClipInputVideoToRec709Range=false; // ?
-	bool      m_bClipOutputVideoToRec709Range=false; // ?
-	int       m_inputBitDepth   [MAX_NUM_CHANNEL_TYPE];         ///< bit-depth of input file
-	int       m_outputBitDepth  [MAX_NUM_CHANNEL_TYPE];         ///< bit-depth of output file
-	int       m_MSBExtendedBitDepth[MAX_NUM_CHANNEL_TYPE];      ///< bit-depth of input samples after MSB extension
-	int       m_internalBitDepth[MAX_NUM_CHANNEL_TYPE];         ///< bit-depth codec operates at (input/output files will be converted)
+	ChromaFormat m_chromaFormat;
+	int       m_bitDepth   [MAX_NUM_CHANNEL_TYPE];         ///< bit-depth of input file
 
 	// coding quality
 	int m_iQP;  ///< QP value of key-picture
@@ -63,18 +57,20 @@ class GvcEncoderCfgApp
 	unsigned int      m_uiMaxCUWidth;                                   ///< max. CU width in pixel
 	unsigned int      m_uiMaxCUHeight;                                  ///< max. CU height in pixel
 	unsigned int      m_uiMaxCUDepth;                                   ///< max. CU depth (as specified by command line)
-	unsigned int      m_uiMaxTotalCUDepth;                              ///< max. total CU depth - includes depth of transform-block structure
 
 	// internal member functions
 	void xCheckParameter();  ///< check validity of configuration values
 	void xPrintParameter();  ///< print configuration values
 	void xPrintUsage();      ///< print usage
+	ChromaFormat numberToChromaFormat(int val);
+
   public:
 	GvcEncoderCfgApp();
 	virtual ~GvcEncoderCfgApp();
 	void create();                            ///< create option handling class
 	void destroy();                           ///< destroy option handling class
 	bool parseCfg( int argc, char* argv[] );  ///< parse configuration file to fill member variables
+
 
 };  // END CLASS DEFINITION GvcEncoderCfgApp
 //! \}

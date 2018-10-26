@@ -9,7 +9,7 @@
  *
  *    This program is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    MERCHANTABILITY or FITNESS FOR A PARTIBULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License along
@@ -37,11 +37,11 @@ GvcEncoderApp::~GvcEncoderApp()
 }
 
 void GvcEncoderApp::create()
-{  //
+{
 }
 
 void GvcEncoderApp::destroy()
-{  //
+{
 }
 
 void GvcEncoderApp::encode()
@@ -56,15 +56,14 @@ void GvcEncoderApp::encode()
 	// Original and Recon frame
 	GvcFrameUnitYuv*       pcFrameYuvOrg = new GvcFrameUnitYuv;
 	GvcFrameUnitYuv*       pcFrameYuvRec = new GvcFrameUnitYuv;
+    // allocate original YUV buffer
+    pcFrameYuvOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, m_uiMaxBUDepth, true );
+    pcFrameYuvRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, m_uiMaxBUDepth, true );
 	// initialize internal class & member variables
 	xInitLibCfg();
 	xCreateLib();
 	// main encoder loop
 	int   iNumEncoded = 0;
-	// allocate original YUV buffer
-	pcFrameYuvOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxCUWidth, m_uiMaxCUHeight, m_uiMaxCUDepth, true );
-	pcFrameYuvRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxCUWidth, m_uiMaxCUHeight, m_uiMaxCUDepth, true );
-
 	while ( m_iFrameRcvd != m_framesToBeEncoded )
 	{
 		// read input YUV file
@@ -102,9 +101,9 @@ void GvcEncoderApp::xInitLibCfg()
 	m_cGvcEnc.setQP                                                ( m_iQP );
 	m_cGvcEnc.setPad                                               ( m_aiPad );
 	m_cGvcEnc.setChromaFormatIdc                                   ( m_chromaFormat  );
-	m_cGvcEnc.setMaxCUWidth                                        ( m_uiMaxCUWidth );
-	m_cGvcEnc.setMaxCUHeight                                       ( m_uiMaxCUHeight );
-	m_cGvcEnc.setMaxTotalCUDepth                                   ( m_uiMaxCUDepth );
+	m_cGvcEnc.setMaxBUWidth                                        ( m_uiMaxBUWidth );
+	m_cGvcEnc.setMaxBUHeight                                       ( m_uiMaxBUHeight );
+	m_cGvcEnc.setMaxTotalBUDepth                                   ( m_uiMaxBUDepth );
 
 	// set internal bit-depth and constants
 	for (int channelType = 0; channelType < MAX_NUM_CHANNEL_TYPE; channelType++)
@@ -120,12 +119,10 @@ void GvcEncoderApp::xCreateLib()
 	noBitDepthShift[0] = noBitDepthShift[1] = 0;
 	m_cTVideoIOYuvInputFile.open( m_inputFileName,     false, m_bitDepth, noBitDepthShift, m_bitDepth );  // read  mode
 	//m_cTVideoIOYuvInputFile.skipFrames(m_FrameSkip, m_iSourceWidth - m_aiPad[0], m_iSourceHeight - m_aiPad[1], m_InputChromaFormatIDC);
-
 	if (!m_reconFileName.empty())
 	{
 		m_cTVideoIOYuvReconFile.open(m_reconFileName, true, m_bitDepth, m_bitDepth, m_bitDepth);  // write mode
 	}
-
 	// Neo Decoder
 	//m_cTEncTop.create();
 }
@@ -135,7 +132,6 @@ void GvcEncoderApp::xDestroyLib()
 	// Video I/O
 	m_cTVideoIOYuvInputFile.close();
 	m_cTVideoIOYuvReconFile.close();
-
 	// Neo Decoder
 	//m_cGvcEnc.destroy(); TODO: Add to GvcEncoder
 }
@@ -158,9 +154,9 @@ bool GvcEncoderApp::parseCfg( int argc, char* argv[] )
 			( "SourceWidth,-wdt", m_iSourceWidth, 0, "Source picture width" )
 			( "SourceHeight,-hgt", m_iSourceHeight, 0, "Source picture height" )
 			( "QP,q", m_iQP, 30, "Qp value" )
-			("MaxCUWidth",                                      m_uiMaxCUWidth,                                     64u)
-			("MaxCUHeight",                                     m_uiMaxCUHeight,                                    64u)
-			("MaxPartitionDepth,h",                             m_uiMaxCUDepth,                                      4u, "CU depth")
+			("MaxBUWidth",                                      m_uiMaxBUWidth,                                     64u)
+			("MaxBUHeight",                                     m_uiMaxBUHeight,                                    64u)
+			("MaxPartitionDepth,h",                             m_uiMaxBUDepth,                                      4u, "BU depth")
 			("ChromaFormat",                               tmpChromaFormat,                               420, "ChromaFormat")
 			("FramesToBeEncoded,f",                             m_framesToBeEncoded,                                  0, "Number of frames to be encoded (default=all)")
 			("BitDepth",                                tmpInternalBitDepth,                8, "Bit-depth the codec operates at. (default:MSBExtendedBitDepth). If different to MSBExtendedBitDepth, source data will be converted");
@@ -211,10 +207,10 @@ void GvcEncoderApp::xCheckParameter()
 
 	xConfirmPara( m_bitstreamFileName.empty(), "A bitstream file name must be specified (BitstreamFile)" );
 	xConfirmPara( m_iQP < 0 || m_iQP > 51, "QP exceeds supported range (0 to 51)" );
-	xConfirmPara( ( m_iSourceWidth % 4 ) != 0, "Resulting coded frame width must be a multiple of the minimum CU size (4)" );
-	xConfirmPara( ( m_iSourceHeight % 4 ) != 0, "Resulting coded frame height must be a multiple of the minimum CU size (4)" );
-	xConfirmPara( (m_uiMaxCUWidth & (m_uiMaxCUWidth - 1)) != 0, "Max CU size must be a power of 2" );
-	xConfirmPara( (m_uiMaxCUHeight & (m_uiMaxCUHeight - 1)) != 0, "Max CU size must be a power of 2" );
+	xConfirmPara( ( m_iSourceWidth % 4 ) != 0, "Resulting coded frame width must be a multiple of the minimum BU size (4)" );
+	xConfirmPara( ( m_iSourceHeight % 4 ) != 0, "Resulting coded frame height must be a multiple of the minimum BU size (4)" );
+	xConfirmPara( (m_uiMaxBUWidth & (m_uiMaxBUWidth - 1)) != 0, "Max BU size must be a power of 2" );
+	xConfirmPara( (m_uiMaxBUHeight & (m_uiMaxBUHeight - 1)) != 0, "Max BU size must be a power of 2" );
 	xConfirmPara( m_chromaFormat == NUM_CHROMA_FORMAT, "Chroma format must be 400, 420, 422 or 444" );
 	xConfirmPara( m_framesToBeEncoded < 0, "Frame number must larger or equal to zero" );
 	xConfirmPara( m_bitDepth[CHANNEL_TYPE_LUMA] <= 0 && m_bitDepth[CHANNEL_TYPE_LUMA] > 16, "bit depth must be between 1 and 16" );
@@ -235,9 +231,9 @@ void GvcEncoderApp::xPrintParameter()
 	printf( "Resolution                             : %dx%d\n", m_iSourceWidth, m_iSourceHeight );
 	printf( "Number of frames                       : %d\n", m_framesToBeEncoded );
 	printf( "QP                                     : %d\n", m_iQP );
-	printf( "Max CU Width                           : %d\n", m_uiMaxCUWidth );
-	printf( "Max CU Height                          : %d\n", m_uiMaxCUHeight );
-	printf( "Max Partition Depth                    : %d\n", m_uiMaxCUDepth );
+	printf( "Max BU Width                           : %d\n", m_uiMaxBUWidth );
+	printf( "Max BU Height                          : %d\n", m_uiMaxBUHeight );
+	printf( "Max Partition Depth                    : %d\n", m_uiMaxBUDepth );
 	printf( "Chroma Format                          : %d\n", m_chromaFormat );
 	printf( "Bit Depth                              : %d\n", m_bitDepth[CHANNEL_TYPE_LUMA] );
 	printf( "\n\n" );

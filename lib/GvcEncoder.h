@@ -9,7 +9,7 @@
  *
  *    This program is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    MERCHANTABILITY or FITNESS FOR A PARTIBULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License along
@@ -38,12 +38,11 @@ class GvcEncoder
 	int m_framesToBeEncoded;
 	int m_iQP;
 	int m_aiPad[2];
-	unsigned int m_maxCUWidth;
-	unsigned int m_maxCUHeight;
-	unsigned int m_maxTotalCUDepth;
+	unsigned int m_maxBUWidth;
+	unsigned int m_maxBUHeight;
+	unsigned int m_maxTotalBUDepth;
 	ChromaFormat m_chromaFormatIDC;
 	int m_bitDepth[MAX_NUM_CHANNEL_TYPE];
-
 
   public:
 	GvcEncoder();
@@ -58,9 +57,9 @@ class GvcEncoder
 	int       getQP                           ()      { return  m_iQP; }
 	void      setPad                          ( int*  iPad )      { for ( int i = 0; i < 2; i++ ) m_aiPad[i] = iPad[i]; }
 	int       getPad                          ( int i )      { return  m_aiPad[i]; }
-	void      setMaxCUWidth                   ( unsigned int  u )      { m_maxCUWidth  = u; }
-	void      setMaxCUHeight                  ( unsigned int  u )      { m_maxCUHeight = u; }
-	void      setMaxTotalCUDepth              ( unsigned int  u )      { m_maxTotalCUDepth = u; }
+	void      setMaxBUWidth                   ( unsigned int  u )      { m_maxBUWidth  = u; }
+	void      setMaxBUHeight                  ( unsigned int  u )      { m_maxBUHeight = u; }
+	void      setMaxTotalBUDepth              ( unsigned int  u )      { m_maxTotalBUDepth = u; }
 	void      setChromaFormatIdc              ( ChromaFormat cf ) { m_chromaFormatIDC = cf; }
 	ChromaFormat  getChromaFormatIdc          ( )              { return m_chromaFormatIDC; }
 	void      setBitDepth( const ChannelType chType, int internalBitDepthForChannel ) { m_bitDepth[chType] = internalBitDepthForChannel; }

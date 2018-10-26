@@ -44,7 +44,6 @@ class GvcEncoderApp
 	GvcEncoder m_cGvcEnc;  ///< encoder class
 	TVideoIOYuv                 m_cTVideoIOYuvInputFile;       ///< input YUV file
 	TVideoIOYuv                 m_cTVideoIOYuvReconFile;       ///< output reconstruction file
-
 	int m_iFrameRcvd;  ///< number of received frames
 	unsigned int m_totalBytes;
 
@@ -62,10 +61,10 @@ class GvcEncoderApp
 	int       m_bitDepth   [MAX_NUM_CHANNEL_TYPE];         ///< bit-depth of input file
 	// coding quality
 	int m_iQP;  ///< QP value of key-picture
-	// coding unit (CU) definition
-	unsigned int      m_uiMaxCUWidth;                                   ///< max. CU width in pixel
-	unsigned int      m_uiMaxCUHeight;                                  ///< max. CU height in pixel
-	unsigned int      m_uiMaxCUDepth;                                   ///< max. CU depth (as specified by command line)
+	// block unit (BU) definition
+	unsigned int      m_uiMaxBUWidth;                                   ///< max. BU width in pixel
+	unsigned int      m_uiMaxBUHeight;                                  ///< max. BU height in pixel
+	unsigned int      m_uiMaxBUDepth;                                   ///< max. BU depth (as specified by command line)
 	// internal member functions
 	void xCheckParameter();  ///< check validity of configuration values
 	void xPrintParameter();  ///< print configuration values

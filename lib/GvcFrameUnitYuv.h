@@ -132,7 +132,7 @@ public:
   short*          getAddr           (const ComponentID ch)       { return  m_piFrameOrg[ch];   }
   const short*    getAddr           (const ComponentID ch) const { return  m_piFrameOrg[ch];   }
 
-  //  Access starting position of original picture for specific coding unit (CU) or partition unit (PU)
+  //  Access starting position of original picture for specific block unit (BU)
   short*          getAddr           (const ComponentID ch, const int ctuRSAddr )       { return m_piFrameOrg[ch] + m_ctuOffsetInBuffer[ch==0?0:1][ ctuRSAddr ]; }
   const short*    getAddr           (const ComponentID ch, const int ctuRSAddr ) const { return m_piFrameOrg[ch] + m_ctuOffsetInBuffer[ch==0?0:1][ ctuRSAddr ]; }
   //short*          getAddr           (const ComponentID ch, const int ctuRSAddr, const int uiAbsZorderIdx )

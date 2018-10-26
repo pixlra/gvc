@@ -11,7 +11,6 @@ INCLUDE_DIRECTORIES(
 SET(GVC_ENC_SRCS
   main.cpp
   GvcEncoderApp.cpp
-  GvcEncoderCfgApp.cpp
   ../common/program_options_lite.cpp
  )
 

@@ -36,25 +36,20 @@ int main( int argc, char* argv[] )
 	cGvcEncoderApp.create();
 	//GvcLogger::SetReportLevel( GVC_LOG_INFO );
 	//LOG( GVC_LOG_INFO ) << "created cGvcEncoderApp object" << std::endl;
-
 	// parse configuration
 	if( !cGvcEncoderApp.parseCfg( argc, argv ) )
 	{
 		cGvcEncoderApp.destroy();
 		return 1;
 	}
-
 	// starting time
 	double dResult;
 	clock_t lBefore = clock();
-
 	// call encoding function
 	cGvcEncoderApp.encode();
-
 	// ending time
 	dResult = (double)( clock() - lBefore ) / CLOCKS_PER_SEC;
 	printf( "\n Total Time: %12.3f sec.\n", dResult );
-
 	// destroy application encoder class
 	cGvcEncoderApp.destroy();
 

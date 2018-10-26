@@ -144,9 +144,14 @@ void GvcEncoderCfgApp::xPrintParameter()
 	printf( "Input          File                    : %s\n", m_inputFileName.c_str() );
 	printf( "Bitstream      File                    : %s\n", m_bitstreamFileName.c_str() );
 	printf( "Reconstruction File                    : %s\n", m_reconFileName.c_str() );
-	printf( "Real     Format                        : %dx%d\n", m_iSourceWidth, m_iSourceHeight );
-	printf( "Internal Format                        : %dx%d\n", m_iSourceWidth, m_iSourceHeight );
+	printf( "Resolution                             : %dx%d\n", m_iSourceWidth, m_iSourceHeight );
+	printf( "Number of frames                       : %d\n", m_framesToBeEncoded );
 	printf( "QP                                     : %d\n", m_iQP );
+	printf( "Max CU Width                           : %d\n", m_uiMaxCUWidth );
+	printf( "Max CU Height                          : %d\n", m_uiMaxCUHeight );
+	printf( "Max Partition Depth                    : %d\n", m_uiMaxCUDepth );
+	printf( "Chroma Format                          : %d\n", m_chromaFormat );
+	printf( "Bit Depth                              : %d\n", m_bitDepth[CHANNEL_TYPE_LUMA] );
 	printf( "\n\n" );
 
 	fflush( stdout );

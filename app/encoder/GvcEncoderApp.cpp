@@ -59,18 +59,13 @@ void GvcEncoderApp::encode()
 	{
 		// read input YUV file
 		m_cTVideoIOYuvInputFile.read( pcFrameYuvOrg, pcFrameYuvOrg, IPCOLOURSPACE_UNCHANGED, m_aiPad, m_chromaFormat, false );
-
 		// increase number of received frames
 		m_iFrameRcvd++;
-
 		// if end of file (which is only detected on a read failure) flush the encoder of any queued pictures
-
 		// call encoding function for one frame
 		//m_cGvcEnc.encode( bEos, flush ? 0 : pcFrameYuvOrg, &cFrameYuvTrueOrg, iNumEncoded); // TODO: Add to GvcEncoder
-
 		// write bistream to file if necessary
 		m_cTVideoIOYuvReconFile.write( pcFrameYuvRec, IPCOLOURSPACE_UNCHANGED, 0, 0, 0, 0, NUM_CHROMA_FORMAT, false  );
-
 	}
 	//m_cGvcEnc.printSummary(false); // TODO: Add to GvcEncoder
 	// delete original YUV buffer

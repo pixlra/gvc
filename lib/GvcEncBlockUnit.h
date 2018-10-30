@@ -25,14 +25,33 @@
 #ifndef __GVCENCBLOCK_H__
 #define __GVCENCBLOCK_H__
 
+#include "TypeDef.h"
+#include "GvcBlockUnit.h"
+#include "GvcFrameUnit.h"
+
 /**
  * \class    GvcEncFrameUnit
  * \brief    Main GVC encoder class
  */
 class GvcEncBlockUnit
 {
+private:
+	GvcBlockUnit**          		m_ppcBestBU;      ///< Best CUs in each depth
+	GvcBlockUnit**           		m_ppcTempBU;      ///< Temporary CUs in each depth
+	unsigned char                   m_uhTotalDepth;
+
+	GvcFrameUnitYuv**               m_ppcPredYuvBest; ///< Best Prediction Yuv for each depth
+	GvcFrameUnitYuv**               m_ppcResiYuvBest; ///< Best Residual Yuv for each depth
+	GvcFrameUnitYuv**               m_ppcRecoYuvBest; ///< Best Reconstruction Yuv for each depth
+	GvcFrameUnitYuv**               m_ppcPredYuvTemp; ///< Temporary Prediction Yuv for each depth
+	GvcFrameUnitYuv**               m_ppcResiYuvTemp; ///< Temporary Residual Yuv for each depth
+	GvcFrameUnitYuv**               m_ppcRecoYuvTemp; ///< Temporary Reconstruction Yuv for each depth
+	GvcFrameUnitYuv**               m_ppcOrigYuv;     ///< Original Yuv for each depth
+
   public:
 	GvcEncBlockUnit();
+	~GvcEncBlockUnit();
+	void  create (unsigned char uhTotalDepth, unsigned int iMaxWidth, unsigned int iMaxHeight, ChromaFormat chromaFormat );
 };
 
 #endif  // __GVCENCBLOCK_H__

@@ -26,6 +26,8 @@
 #define __GVCENCODER_H__
 
 #include "TypeDef.h"
+#include "GvcEncFrameUnit.h"
+#include "GvcEncBlockUnit.h"
 
 /**
  * \class    GvcEncoder
@@ -41,8 +43,10 @@ class GvcEncoder
 	unsigned int m_maxBUWidth;
 	unsigned int m_maxBUHeight;
 	unsigned int m_maxTotalBUDepth;
-	ChromaFormat m_chromaFormatIDC;
+	ChromaFormat m_chromaFormat;
 	int m_bitDepth[MAX_NUM_CHANNEL_TYPE];
+	GvcEncBlockUnit m_cBlockUnitEncoder;
+    GvcEncFrameUnit m_cFrameUnitEncoder;
 
   public:
 	GvcEncoder();
@@ -60,10 +64,10 @@ class GvcEncoder
 	void      setMaxBUWidth                   ( unsigned int  u )      { m_maxBUWidth  = u; }
 	void      setMaxBUHeight                  ( unsigned int  u )      { m_maxBUHeight = u; }
 	void      setMaxTotalBUDepth              ( unsigned int  u )      { m_maxTotalBUDepth = u; }
-	void      setChromaFormatIdc              ( ChromaFormat cf ) { m_chromaFormatIDC = cf; }
-	ChromaFormat  getChromaFormatIdc          ( )              { return m_chromaFormatIDC; }
+	void      setChromaFormat                 ( ChromaFormat cf ) { m_chromaFormat = cf; }
+	ChromaFormat  getChromaFormat             ( )              { return m_chromaFormat; }
 	void      setBitDepth( const ChannelType chType, int internalBitDepthForChannel ) { m_bitDepth[chType] = internalBitDepthForChannel; }
-
+	void      create();
 };
 
 #endif  // __GVCENCODER_H__

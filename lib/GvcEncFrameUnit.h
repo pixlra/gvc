@@ -25,14 +25,22 @@
 #ifndef __GVCENCFRAME_H__
 #define __GVCENCFRAME_H__
 
+#include "TypeDef.h"
+#include "GvcFrameUnitYuv.h"
+
 /**
  * \class    GvcEncFrameUnit
  * \brief    Main GVC encoder class
  */
 class GvcEncFrameUnit
 {
+private:
+	GvcFrameUnitYuv m_picYuvPred;
+	GvcFrameUnitYuv m_picYuvResi;
   public:
 	GvcEncFrameUnit();
+	virtual ~GvcEncFrameUnit();
+	void      create              ( int iWidth, int iHeight, ChromaFormat chromaFormat, unsigned int iMaxBUWidth, unsigned int iMaxBUHeight, unsigned char uhTotalDepth );
 };
 
 #endif  // __GVCENCFRAME_H__

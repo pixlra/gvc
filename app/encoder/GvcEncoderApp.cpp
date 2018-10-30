@@ -100,7 +100,7 @@ void GvcEncoderApp::xInitLibCfg()
 	m_cGvcEnc.setFramesToBeEncoded                                 ( m_framesToBeEncoded );
 	m_cGvcEnc.setQP                                                ( m_iQP );
 	m_cGvcEnc.setPad                                               ( m_aiPad );
-	m_cGvcEnc.setChromaFormatIdc                                   ( m_chromaFormat  );
+	m_cGvcEnc.setChromaFormat                                      ( m_chromaFormat  );
 	m_cGvcEnc.setMaxBUWidth                                        ( m_uiMaxBUWidth );
 	m_cGvcEnc.setMaxBUHeight                                       ( m_uiMaxBUHeight );
 	m_cGvcEnc.setMaxTotalBUDepth                                   ( m_uiMaxBUDepth );
@@ -124,7 +124,7 @@ void GvcEncoderApp::xCreateLib()
 		m_cTVideoIOYuvReconFile.open(m_reconFileName, true, m_bitDepth, m_bitDepth, m_bitDepth);  // write mode
 	}
 	// Neo Decoder
-	//m_cTEncTop.create();
+	m_cGvcEnc.create();
 }
 
 void GvcEncoderApp::xDestroyLib()

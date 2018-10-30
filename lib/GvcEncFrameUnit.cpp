@@ -23,6 +23,15 @@
  */
 
 #include "GvcEncFrameUnit.h"
-#include "GvcEncBlockUnit.h"
 
 GvcEncFrameUnit::GvcEncFrameUnit() {}
+GvcEncFrameUnit::~GvcEncFrameUnit() {}
+
+void GvcEncFrameUnit::create( int iWidth, int iHeight, ChromaFormat chromaFormat, unsigned int iMaxCUWidth, unsigned int iMaxCUHeight, unsigned char uhTotalDepth )
+{
+    // create prediction picture
+    m_picYuvPred.create( iWidth, iHeight, chromaFormat, iMaxCUWidth, iMaxCUHeight, uhTotalDepth, true );
+
+    // create residual picture
+    m_picYuvResi.create( iWidth, iHeight, chromaFormat, iMaxCUWidth, iMaxCUHeight, uhTotalDepth, true );
+}

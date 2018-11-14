@@ -14,7 +14,7 @@ GvcFrameUnitSym::GvcFrameUnitSym()
         ,m_numPartInCtuWidth(0)
         ,m_numPartInCtuHeight(0)
         ,m_numCtusInFrame(0)
-        ,m_pictureCtuArray(NULL)
+        ,m_frameBUArray(NULL)
         {}
 
 GvcFrameUnitSym::~GvcFrameUnitSym()
@@ -39,31 +39,31 @@ void GvcFrameUnitSym::create  ( ChromaFormat chromaFormatIDC, int iWidth, int iH
     m_frameHeightInCtus  = ( iHeight%uiMaxCuHeight ) ? iHeight/uiMaxCuHeight + 1 : iHeight/uiMaxCuHeight;
 
     m_numCtusInFrame     = m_frameWidthInCtus * m_frameHeightInCtus;
-    m_pictureCtuArray    = new GvcBlockUnit*[m_numCtusInFrame];
+    m_frameBUArray    = new GvcBlockUnit*[m_numCtusInFrame];
 
     for (unsigned int i=0; i<m_numCtusInFrame ; i++ )
     {
-        m_pictureCtuArray[i] = new GvcBlockUnit;
-        //m_pictureCtuArray[i]->create( chromaFormatIDC, m_numPartitionsInCtu, uiMaxCuWidth, uiMaxCuHeight, false, uiMaxCuWidth >> m_uhTotalDepth);
+        m_frameBUArray[i] = new GvcBlockUnit;
+        //m_frameBUArray[i]->create( chromaFormatIDC, m_numPartitionsInCtu, uiMaxCuWidth, uiMaxCuHeight, false, uiMaxCuWidth >> m_uhTotalDepth);
     }
 
 }
 
 void GvcFrameUnitSym::destroy()
 {
-    if (m_pictureCtuArray)
+    if (m_frameBUArray)
     {
         for (unsigned int i = 0; i < m_numCtusInFrame; i++)
         {
-            if (m_pictureCtuArray[i])
+            if (m_frameBUArray[i])
             {
-                //m_pictureCtuArray[i]->destroy();
-                delete m_pictureCtuArray[i];
-                m_pictureCtuArray[i] = NULL;
+                //m_frameBUArray[i]->destroy();
+                delete m_frameBUArray[i];
+                m_frameBUArray[i] = NULL;
             }
         }
-        delete [] m_pictureCtuArray;
-        m_pictureCtuArray = NULL;
+        delete [] m_frameBUArray;
+        m_frameBUArray = NULL;
     }
 }
 

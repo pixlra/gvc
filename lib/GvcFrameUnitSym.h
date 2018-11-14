@@ -24,7 +24,7 @@ class GvcFrameUnitSym
         unsigned int          m_numPartInCtuHeight;
         unsigned int          m_numCtusInFrame;
 
-        GvcBlockUnit**  m_pictureCtuArray;        ///< array of CU data.
+    GvcBlockUnit**  m_frameBUArray;        ///< array of CU data.
 
     public:
         void               create  ( ChromaFormat chromaFormatIDC, int iWidth, int iHeight, unsigned int uiMaxCuWidth, unsigned int uiMaxCuHeight, unsigned int uiMaxDepth);
@@ -38,14 +38,11 @@ class GvcFrameUnitSym
         unsigned int               getMinCUWidth() const                                 { return m_uiMinCUWidth;                }
         unsigned int               getMinCUHeight() const                                { return m_uiMinCUHeight;               }
         unsigned int               getNumberOfCtusInFrame() const                        { return m_numCtusInFrame;              }
-        GvcBlockUnit*        getCtu( unsigned int ctuRsAddr )                              { return m_pictureCtuArray[ctuRsAddr];  }
-        const GvcBlockUnit*  getCtu( unsigned int ctuRsAddr ) const                        { return m_pictureCtuArray[ctuRsAddr];  }
-
+        GvcBlockUnit*              getBU( unsigned int BUAddr )                              { return m_frameBUArray[BUAddr];  }
         unsigned int               getNumPartitionsInCtu() const                         { return m_numPartitionsInCtu;   }
         unsigned int               getNumPartInCtuWidth() const                          { return m_numPartInCtuWidth;    }
         unsigned int               getNumPartInCtuHeight() const                         { return m_numPartInCtuHeight;   }
 
-//! \}
 };
 
 #endif //GVC_GVCFRAMEUNITSYM_H

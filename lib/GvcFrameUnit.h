@@ -55,9 +55,7 @@ public:
   virtual void  destroy();
 
   GvcFrameUnitSym*   getFrameSym()                        { return  &m_frameSym;    }
-  const GvcFrameUnitSym* getFrameSym() const              { return  &m_frameSym;    }
-  GvcBlockUnit*   getCtu( unsigned int ctuRsAddr )           { return  m_frameSym.getCtu( ctuRsAddr ); }
-  const GvcBlockUnit* getCtu( unsigned int ctuRsAddr ) const { return  m_frameSym.getCtu( ctuRsAddr ); }
+  GvcBlockUnit*   getBU( unsigned int ctuRsAddr )           { return  m_frameSym.getBU( ctuRsAddr ); }
 
   GvcFrameUnitYuv*   getFrameYuvOrg()        { return  m_apcFrameYuv[FRAME_YUV_ORG]; }
   GvcFrameUnitYuv*   getFrameYuvRec()        { return  m_apcFrameYuv[FRAME_YUV_REC]; }
@@ -66,20 +64,20 @@ public:
   void          setFrameYuvPred( GvcFrameUnitYuv* pcFrameYuv )       { m_pcFrameYuvPred = pcFrameYuv; }
   void          setFrameYuvResi( GvcFrameUnitYuv* pcFrameYuv )       { m_pcFrameYuvResi = pcFrameYuv; }
 
-  unsigned int          getNumberOfCtusInFrame() const     { return m_frameSym.getNumberOfCtusInFrame(); }
-  unsigned int          getNumPartInCtuWidth() const       { return m_frameSym.getNumPartInCtuWidth();   }
-  unsigned int          getNumPartInCtuHeight() const      { return m_frameSym.getNumPartInCtuHeight();  }
-  unsigned int          getNumPartitionsInCtu() const      { return m_frameSym.getNumPartitionsInCtu();  }
-  unsigned int          getFrameWidthInCtus() const        { return m_frameSym.getFrameWidthInCtus();    }
-  unsigned int          getFrameHeightInCtus() const       { return m_frameSym.getFrameHeightInCtus();   }
-  unsigned int          getMinCUWidth() const              { return m_frameSym.getMinCUWidth();          }
-  unsigned int          getMinCUHeight() const             { return m_frameSym.getMinCUHeight();         }
+  unsigned int          getNumberOfCtusInFrame()      { return m_frameSym.getNumberOfCtusInFrame(); }
+  unsigned int          getNumPartInCtuWidth()        { return m_frameSym.getNumPartInCtuWidth();   }
+  unsigned int          getNumPartInCtuHeight()       { return m_frameSym.getNumPartInCtuHeight();  }
+  unsigned int          getNumPartitionsInCtu()       { return m_frameSym.getNumPartitionsInCtu();  }
+  unsigned int          getFrameWidthInCtus()         { return m_frameSym.getFrameWidthInCtus();    }
+  unsigned int          getFrameHeightInCtus()        { return m_frameSym.getFrameHeightInCtus();   }
+  unsigned int          getMinCUWidth()               { return m_frameSym.getMinCUWidth();          }
+  unsigned int          getMinCUHeight()              { return m_frameSym.getMinCUHeight();         }
 
-  int           getStride(const ComponentID id) const          { return m_apcFrameYuv[FRAME_YUV_REC]->getStride(id); }
-  int           getComponentScaleX(const ComponentID id) const    { return m_apcFrameYuv[FRAME_YUV_REC]->getComponentScaleX(id); }
-  int           getComponentScaleY(const ComponentID id) const    { return m_apcFrameYuv[FRAME_YUV_REC]->getComponentScaleY(id); }
-  ChromaFormat  getChromaFormat() const                           { return m_apcFrameYuv[FRAME_YUV_REC]->getChromaFormat(); }
-  int           getNumberValidComponents() const                  { return m_apcFrameYuv[FRAME_YUV_REC]->getNumberValidComponents(); }
+  int           getStride( ComponentID id)           { return m_apcFrameYuv[FRAME_YUV_REC]->getStride(id); }
+  int           getComponentScaleX( ComponentID id)     { return m_apcFrameYuv[FRAME_YUV_REC]->getComponentScaleX(id); }
+  int           getComponentScaleY( ComponentID id)     { return m_apcFrameYuv[FRAME_YUV_REC]->getComponentScaleY(id); }
+  ChromaFormat  getChromaFormat()                            { return m_apcFrameYuv[FRAME_YUV_REC]->getChromaFormat(); }
+  int           getNumberValidComponents()                   { return m_apcFrameYuv[FRAME_YUV_REC]->getNumberValidComponents(); }
 
 };// END CLASS DEFINITION GvcFrameUnit
 

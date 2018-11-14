@@ -45,6 +45,7 @@
 
 #include "TVideoIOYuv.h"
 #include "TypeDef.h"
+#include "GvcFrameUnitYuv.h"
 
 using namespace std;
 

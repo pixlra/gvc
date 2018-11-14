@@ -42,7 +42,8 @@
 #include <fstream>
 #include <iostream>
 #include "TypeDef.h"
-#include "GvcFrameUnitYuv.h"
+
+class GvcFrameUnitYuv;
 
 using namespace std;
 

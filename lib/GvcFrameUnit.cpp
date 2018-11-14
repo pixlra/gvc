@@ -3,6 +3,7 @@
 */
 
 #include "GvcFrameUnit.h"
+#include "GvcBlockUnit.h"
 
 //! \ingroup TLibCommon
 //! \{

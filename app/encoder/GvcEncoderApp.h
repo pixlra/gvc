@@ -30,11 +30,9 @@
 #include <string>
 #include <vector>
 
+#include "TypeDef.h"
 #include "GvcEncoder.h"
 #include "TVideoIOYuv.h"
-#include "GvcFrameUnitYuv.h"
-#include "program_options_lite.h"
-#include "TypeDef.h"
 
 /// encoder application class
 class GvcEncoderApp

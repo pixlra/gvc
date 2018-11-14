@@ -26,9 +26,10 @@
 #define __GVCFRAMEUNIT__
 
 #include "TypeDef.h"
-#include "GvcFrameUnitYuv.h"
 #include "GvcFrameUnitSym.h"
-#include "GvcBlockUnit.h"
+#include "GvcFrameUnitYuv.h"
+
+class GvcBlockUnit;
 
 //! \ingroup TLibCommon
 //! \{

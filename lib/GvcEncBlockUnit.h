@@ -26,8 +26,9 @@
 #define __GVCENCBLOCK_H__
 
 #include "TypeDef.h"
-#include "GvcBlockUnit.h"
-#include "GvcFrameUnit.h"
+
+class GvcBlockUnit;
+class GvcFrameUnitYuv;
 
 /**
  * \class    GvcEncFrameUnit

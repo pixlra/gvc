@@ -5,8 +5,9 @@
 #ifndef GVC_GVCFRAMEUNITSYM_H
 #define GVC_GVCFRAMEUNITSYM_H
 
-#include "GvcBlockUnit.h"
 #include "TypeDef.h"
+
+class GvcBlockUnit;
 
 class GvcFrameUnitSym
 {

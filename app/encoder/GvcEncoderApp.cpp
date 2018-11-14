@@ -23,6 +23,8 @@
  */
 
 #include "GvcEncoderApp.h"
+#include "GvcFrameUnitYuv.h"
+#include "program_options_lite.h"
 
 namespace po = df::program_options_lite;
 

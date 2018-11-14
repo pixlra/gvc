@@ -23,6 +23,8 @@
  */
 
 #include "GvcEncBlockUnit.h"
+#include "GvcBlockUnit.h"
+#include "GvcFrameUnit.h"
 
 GvcEncBlockUnit::GvcEncBlockUnit() {}
 GvcEncBlockUnit::~GvcEncBlockUnit() {}

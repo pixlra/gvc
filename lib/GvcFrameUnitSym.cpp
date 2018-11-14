@@ -3,6 +3,7 @@
 //
 
 #include "GvcFrameUnitSym.h"
+#include "GvcBlockUnit.h"
 
 GvcFrameUnitSym::GvcFrameUnitSym()
         :m_frameWidthInCtus(0)

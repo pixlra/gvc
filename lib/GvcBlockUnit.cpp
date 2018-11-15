@@ -10,3 +10,12 @@ GvcBlockUnit::GvcBlockUnit()
 
 GvcBlockUnit::~GvcBlockUnit()
 {}
+
+void GvcBlockUnit::create(ChromaFormat chromaFormatIDC, unsigned int uiNumPartition, unsigned int uiWidth,
+                          unsigned int uiHeight, int unitSize)
+{
+
+    m_pcFrame              = NULL;
+    m_uiNumPartition     = uiNumPartition;
+    m_unitSize = unitSize;
+}

@@ -52,8 +52,8 @@ void GvcEncBlockUnit::create (unsigned char uhTotalDepth, unsigned int uiMaxWidt
         unsigned int uiWidth  = uiMaxWidth  >> i;
         unsigned int uiHeight = uiMaxHeight >> i;
 
-       // m_ppcBestBU[i] = new GvcBlockUnit; m_ppcBestBU[i]->create( chromaFormat, uiNumPartitions, uiWidth, uiHeight, false, uiMaxWidth >> (m_uhTotalDepth - 1) ); // ADD CREATE FUNC IN GVCBLOCKUNIT
-       // m_ppcTempBU[i] = new GvcBlockUnit; m_ppcTempBU[i]->create( chromaFormat, uiNumPartitions, uiWidth, uiHeight, false, uiMaxWidth >> (m_uhTotalDepth - 1) ); // ADD CREATE FUNC IN GVCBLOCKUNIT
+        m_ppcBestBU[i] = new GvcBlockUnit; m_ppcBestBU[i]->create( chromaFormat, uiNumPartitions, uiWidth, uiHeight, uiMaxWidth >> (m_uhTotalDepth - 1) );
+        m_ppcTempBU[i] = new GvcBlockUnit; m_ppcTempBU[i]->create( chromaFormat, uiNumPartitions, uiWidth, uiHeight, uiMaxWidth >> (m_uhTotalDepth - 1) );
 
         /*m_ppcPredYuvBest[i] = new GvcFrameUnitYuv; m_ppcPredYuvBest[i]->create(uiWidth, uiHeight, chromaFormat); // ADD CREATE TCOMYUV CLASS
         m_ppcResiYuvBest[i] = new GvcFrameUnitYuv; m_ppcResiYuvBest[i]->create(uiWidth, uiHeight, chromaFormat);

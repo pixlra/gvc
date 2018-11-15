@@ -68,10 +68,6 @@ private:
   int   m_picWidth;                                 ///< Width of picture in pixels
   int   m_picHeight;                                ///< Height of picture in pixels
   ChromaFormat m_chromaFormatIDC;                   ///< Chroma Format
-
-  int*  m_ctuOffsetInBuffer[MAX_NUM_CHANNEL_TYPE];  ///< Gives an offset in the buffer for a given CTU (and channel)
-  int*  m_subCuOffsetInBuffer[MAX_NUM_CHANNEL_TYPE];///< Gives an offset in the buffer for a given sub-CU (and channel), relative to start of CTU
-
   int   m_marginX;                                  ///< margin of Luma channel (chroma's may be smaller, depending on ratio)
   int   m_marginY;                                  ///< margin of Luma channel (chroma's may be smaller, depending on ratio)
 
@@ -86,17 +82,16 @@ public:
   void          create            (const int picWidth,
                                    const int picHeight,
                                    const ChromaFormat chromaFormatIDC,
-                                   const unsigned int maxCUWidth,  ///< used for generating offsets to CUs.
-                                   const unsigned int maxCUHeight, ///< used for generating offsets to CUs.
-                                   const unsigned int maxCUDepth,  ///< used for generating offsets to CUs.
-                                   const bool bUseMargin);   ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
+                                   const unsigned int maxCUWidth=0,  ///< used for generating offsets to CUs.
+                                   const unsigned int maxCUHeight=0, ///< used for generating offsets to CUs.
+                                   const bool bUseMargin=false);   ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
 
   void          createWithoutCUInfo(const int picWidth,
                                     const int picHeight,
                                     const ChromaFormat chromaFormatIDC,
-                                    const bool bUseMargin=false, ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
-                                    const unsigned int maxCUWidth=0,   ///< used for margin only
-                                    const unsigned int maxCUHeight=0); ///< used for margin only
+                                    const unsigned int maxCUWidth=0,              ///< used for generating offsets to CUs.
+                                    const unsigned int maxCUHeight=0,             ///< used for generating offsets to CUs.
+                                    const bool bUseMargin=false); ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
 
   void          destroy           ();
 
@@ -131,14 +126,6 @@ public:
   //  Access starting position of original picture
   short*          getAddr           (const ComponentID ch)       { return  m_piFrameOrg[ch];   }
   const short*    getAddr           (const ComponentID ch) const { return  m_piFrameOrg[ch];   }
-
-  //  Access starting position of original picture for specific block unit (BU)
-  short*          getAddr           (const ComponentID ch, const int ctuRSAddr )       { return m_piFrameOrg[ch] + m_ctuOffsetInBuffer[ch==0?0:1][ ctuRSAddr ]; }
-  const short*    getAddr           (const ComponentID ch, const int ctuRSAddr ) const { return m_piFrameOrg[ch] + m_ctuOffsetInBuffer[ch==0?0:1][ ctuRSAddr ]; }
-  //short*          getAddr           (const ComponentID ch, const int ctuRSAddr, const int uiAbsZorderIdx )
-  //                                   { return m_piFrameOrg[ch] + m_ctuOffsetInBuffer[ch==0?0:1][ctuRSAddr] + m_subCuOffsetInBuffer[ch==0?0:1][g_auiZscanToRaster[uiAbsZorderIdx]]; } //TODO: Add these functions
-  //const short*    getAddr           (const ComponentID ch, const int ctuRSAddr, const int uiAbsZorderIdx ) const
-  //                                   { return m_piFrameOrg[ch] + m_ctuOffsetInBuffer[ch==0?0:1][ctuRSAddr] + m_subCuOffsetInBuffer[ch==0?0:1][g_auiZscanToRaster[uiAbsZorderIdx]]; }
 
  // ------------------------------------------------------------------------------------------------
   //  Miscellaneous

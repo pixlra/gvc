@@ -53,12 +53,6 @@ GvcFrameUnitYuv::GvcFrameUnitYuv()
     m_apiFrameBuf[i]    = NULL;   // Buffer (including margin)
     m_piFrameOrg[i]     = NULL;    // m_apiPicBufY + m_iMarginLuma*getStride() + m_iMarginLuma
   }
-
-  for(int i=0; i<MAX_NUM_CHANNEL_TYPE; i++)
-  {
-    m_ctuOffsetInBuffer[i]=0;
-    m_subCuOffsetInBuffer[i]=0;
-  }
 }
 
 GvcFrameUnitYuv::~GvcFrameUnitYuv()
@@ -69,9 +63,10 @@ GvcFrameUnitYuv::~GvcFrameUnitYuv()
 void GvcFrameUnitYuv::createWithoutCUInfo ( const int picWidth,                 ///< picture width
                                        const int picHeight,                ///< picture height
                                        const ChromaFormat chromaFormatIDC, ///< chroma format
-                                       const bool bUseMargin,              ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
-                                       const unsigned int maxCUWidth,              ///< used for margin only
-                                       const unsigned int maxCUHeight)             ///< used for margin only
+                                            const unsigned int maxCUWidth,              ///< used for generating offsets to CUs.
+                                            const unsigned int maxCUHeight,             ///< used for generating offsets to CUs.
+                                       const bool bUseMargin              ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
+                                       )
 
 {
   destroy();
@@ -95,12 +90,6 @@ void GvcFrameUnitYuv::createWithoutCUInfo ( const int picWidth,                 
     m_apiFrameBuf[comp] = NULL;
     m_piFrameOrg[comp]  = NULL;
   }
-
-  for(int chan=0; chan<MAX_NUM_CHANNEL_TYPE; chan++)
-  {
-    m_ctuOffsetInBuffer[chan]   = NULL;
-    m_subCuOffsetInBuffer[chan] = NULL;
-  }
 }
 
 
@@ -110,11 +99,10 @@ void GvcFrameUnitYuv::create ( const int picWidth,                 ///< picture 
                           const ChromaFormat chromaFormatIDC, ///< chroma format
                           const unsigned int maxCUWidth,              ///< used for generating offsets to CUs.
                           const unsigned int maxCUHeight,             ///< used for generating offsets to CUs.
-                          const unsigned int maxCUDepth,              ///< used for generating offsets to CUs.
                           const bool bUseMargin)              ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
 
 {
-  createWithoutCUInfo(picWidth, picHeight, chromaFormatIDC, bUseMargin, maxCUWidth, maxCUHeight);
+  createWithoutCUInfo(picWidth, picHeight, chromaFormatIDC, maxCUWidth, maxCUHeight, bUseMargin);
 
   const int numCuInWidth  = m_picWidth  / maxCUWidth  + (m_picWidth  % maxCUWidth  != 0);
   const int numCuInHeight = m_picHeight / maxCUHeight + (m_picHeight % maxCUHeight != 0);
@@ -124,30 +112,6 @@ void GvcFrameUnitYuv::create ( const int picWidth,                 ///< picture 
     const int ctuHeight = maxCUHeight>>getChannelTypeScaleY(ch);
     const int ctuWidth  = maxCUWidth>>getChannelTypeScaleX(ch);
     const int stride    = getStride(ch);
-
-    m_ctuOffsetInBuffer[chan] = new int[numCuInWidth * numCuInHeight];
-
-    for (int cuRow = 0; cuRow < numCuInHeight; cuRow++)
-    {
-      for (int cuCol = 0; cuCol < numCuInWidth; cuCol++)
-      {
-        m_ctuOffsetInBuffer[chan][cuRow * numCuInWidth + cuCol] = stride * cuRow * ctuHeight + cuCol * ctuWidth;
-      }
-    }
-
-    m_subCuOffsetInBuffer[chan] = new int[(size_t)1 << (2 * maxCUDepth)];
-
-    const int numSubBlockPartitions=(1<<maxCUDepth);
-    const int minSubBlockHeight    =(ctuHeight >> maxCUDepth);
-    const int minSubBlockWidth     =(ctuWidth  >> maxCUDepth);
-
-    for (int buRow = 0; buRow < numSubBlockPartitions; buRow++)
-    {
-      for (int buCol = 0; buCol < numSubBlockPartitions; buCol++)
-      {
-        m_subCuOffsetInBuffer[chan][(buRow << maxCUDepth) + buCol] = stride  * buRow * minSubBlockHeight + buCol * minSubBlockWidth;
-      }
-    }
   }
 }
 
@@ -164,19 +128,6 @@ void GvcFrameUnitYuv::destroy()
     }
   }
 
-  for(int chan=0; chan<MAX_NUM_CHANNEL_TYPE; chan++)
-  {
-    if (m_ctuOffsetInBuffer[chan])
-    {
-      delete[] m_ctuOffsetInBuffer[chan];
-      m_ctuOffsetInBuffer[chan] = NULL;
-    }
-    if (m_subCuOffsetInBuffer[chan])
-    {
-      delete[] m_subCuOffsetInBuffer[chan];
-      m_subCuOffsetInBuffer[chan] = NULL;
-    }
-  }
 }
 
 void  GvcFrameUnitYuv::copyToPic (GvcFrameUnitYuv*  pcPicYuvDst) const

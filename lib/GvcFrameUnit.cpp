@@ -35,10 +35,10 @@ void GvcFrameUnit::create( ChromaFormat chromaFormatIDC, int iWidth, int iHeight
   if (!bIsVirtual)
   {
     m_apcFrameYuv[FRAME_YUV_ORG]   = new GvcFrameUnitYuv;
-    m_apcFrameYuv[FRAME_YUV_ORG]->create( iWidth, iHeight, chromaFormatIDC, uiMaxCuWidth, uiMaxCuHeight, uiMaxDepth, true );
+    m_apcFrameYuv[FRAME_YUV_ORG]->create( iWidth, iHeight, chromaFormatIDC, uiMaxCuWidth, uiMaxCuHeight, true );
   }
   m_apcFrameYuv[FRAME_YUV_REC]  = new GvcFrameUnitYuv;
-  m_apcFrameYuv[FRAME_YUV_REC]->create( iWidth, iHeight, chromaFormatIDC, uiMaxCuWidth, uiMaxCuHeight, uiMaxDepth, true );
+  m_apcFrameYuv[FRAME_YUV_REC]->create( iWidth, iHeight, chromaFormatIDC, uiMaxCuWidth, uiMaxCuHeight, true );
 }
 
 void GvcFrameUnit::destroy()

@@ -59,8 +59,8 @@ void GvcEncoderApp::encode()
 	GvcFrameUnitYuv*       pcFrameYuvOrg = new GvcFrameUnitYuv;
 	GvcFrameUnitYuv*       pcFrameYuvRec = new GvcFrameUnitYuv;
     // allocate original YUV buffer
-    pcFrameYuvOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, m_uiMaxBUDepth, true );
-    pcFrameYuvRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, m_uiMaxBUDepth, true );
+    pcFrameYuvOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
+    pcFrameYuvRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
 	// initialize internal class & member variables
 	xInitLibCfg();
 	xCreateLib();

@@ -23,6 +23,7 @@
  */
 
 #include "GvcEncoder.h"
+#include "GvcFrameUnit.h"
 
 GvcEncoder::GvcEncoder()
 {
@@ -34,4 +35,26 @@ GvcEncoder::~GvcEncoder()
 
 void GvcEncoder::create()
 {
+}
+
+void GvcEncoder::encode()
+{
+    short *luma = m_pcFrameOrg->getAddr(COMPONENT_Y);
+    luma += 300;
+    for(int j=0; j<10; j++)
+        std::cout << luma[j] << " ";
+    std::cout << std::endl;
+    m_pcFrameRec = m_pcFrameOrg;
+    encodeFrameUnit();
+
+}
+
+void GvcEncoder::encodeFrameUnit()
+{
+
+}
+
+void GvcEncoder::encodeBlockUnit()
+{
+
 }

@@ -31,11 +31,13 @@
  * \class    GvcEncoder
  * \brief    Main GVC encoder class
  */
+class GvcFrameUnit;
 class GvcEncoder
 {
 	int m_iSourceWidth;
 	int m_iSourceHeight;
-	int m_framesToBeEncoded;
+	int m_iFramesToBeEncoded;
+	int m_iNumEncodedFrames;
 	int m_iQP;
 	int m_aiPad[2];
 	unsigned int m_maxBUWidth;
@@ -43,6 +45,8 @@ class GvcEncoder
 	unsigned int m_maxTotalBUDepth;
 	ChromaFormat m_chromaFormat;
 	int m_bitDepth[MAX_NUM_CHANNEL_TYPE];
+    GvcFrameUnit* m_pcFrameOrg;
+    GvcFrameUnit* m_pcFrameRec;
 
   public:
 	GvcEncoder();
@@ -51,8 +55,10 @@ class GvcEncoder
 	int       getSourceWidth                  ()      { return  m_iSourceWidth; }
 	void      setSourceHeight                 ( int   i )      { m_iSourceHeight = i; }
 	int       getSourceHeight                 ()      { return  m_iSourceHeight; }
-	void      setFramesToBeEncoded            ( int   i )      { m_framesToBeEncoded = i; }
-	int       getFramesToBeEncoded            ()      { return  m_framesToBeEncoded; }
+	void      setFramesToBeEncoded            ( int   i )      { m_iFramesToBeEncoded = i; }
+	int       getFramesToBeEncoded            ()      { return  m_iFramesToBeEncoded; }
+    void      setNumEncodedFrames                ( int   i )      { m_iNumEncodedFrames = i; }
+    int       getNumEncodedFrames                ()      { return  m_iNumEncodedFrames; }
 	void      setQP                           ( int   i )      { m_iQP = i; }
 	int       getQP                           ()      { return  m_iQP; }
 	void      setPad                          ( int*  iPad )      { for ( int i = 0; i < 2; i++ ) m_aiPad[i] = iPad[i]; }
@@ -63,7 +69,14 @@ class GvcEncoder
 	void      setChromaFormat                 ( ChromaFormat cf ) { m_chromaFormat = cf; }
 	ChromaFormat  getChromaFormat             ( )              { return m_chromaFormat; }
 	void      setBitDepth( const ChannelType chType, int internalBitDepthForChannel ) { m_bitDepth[chType] = internalBitDepthForChannel; }
+    GvcFrameUnit* getFrameOrg() { return m_pcFrameOrg; }
+    void setFrameOrg(GvcFrameUnit* frame) { m_pcFrameOrg = frame; }
+    GvcFrameUnit* getFrameRec() { return m_pcFrameRec; }
+    void setFrameRec(GvcFrameUnit* frame) { m_pcFrameRec = frame; }
 	void      create();
+	void      encode();
+	void      encodeFrameUnit();
+	void      encodeBlockUnit();
 };
 
 #endif  // __GVCENCODER_H__

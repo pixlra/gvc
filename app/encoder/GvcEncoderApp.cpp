@@ -61,6 +61,9 @@ void GvcEncoderApp::encode()
     // allocate original YUV buffer
     pcFrameOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
     pcFrameRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
+	m_cGvcEnc.setFrameOrg( pcFrameOrg );
+	m_cGvcEnc.setFrameRec( pcFrameRec );
+
 	// initialize internal class & member variables
 	xInitLibCfg();
 	xCreateLib();
@@ -68,15 +71,10 @@ void GvcEncoderApp::encode()
 	int   iNumEncoded = 0;
 	while ( m_iFrameRcvd != m_framesToBeEncoded )
 	{
-		// read input YUV file
 		m_cTVideoIOYuvInputFile.read( pcFrameOrg, pcFrameOrg, IPCOLOURSPACE_UNCHANGED, m_aiPad, m_chromaFormat, false );
-		// increase number of received frames
 		m_iFrameRcvd++;
-		// if end of file (which is only detected on a read failure) flush the encoder of any queued pictures
-		// call encoding function for one frame
-		//m_cGvcEnc.encode( bEos, flush ? 0 : pcFrameYuvOrg, &cFrameYuvTrueOrg, iNumEncoded); // TODO: Add to GvcEncoder
-		// write bistream to file if necessary
-		m_cTVideoIOYuvReconFile.write( pcFrameRec, IPCOLOURSPACE_UNCHANGED, 0, 0, 0, 0, NUM_CHROMA_FORMAT, false  );
+		m_cGvcEnc.encode();
+		m_cTVideoIOYuvReconFile.write( m_cGvcEnc.getFrameRec(), IPCOLOURSPACE_UNCHANGED, 0, 0, 0, 0, NUM_CHROMA_FORMAT, false  );
 	}
 	//m_cGvcEnc.printSummary(false); // TODO: Add to GvcEncoder
 	// delete original YUV buffer
@@ -100,6 +98,7 @@ void GvcEncoderApp::xInitLibCfg()
 	m_cGvcEnc.setSourceWidth                                       ( m_iSourceWidth );
 	m_cGvcEnc.setSourceHeight                                      ( m_iSourceHeight );
 	m_cGvcEnc.setFramesToBeEncoded                                 ( m_framesToBeEncoded );
+	m_cGvcEnc.setNumEncodedFrames                                  ( 0 );
 	m_cGvcEnc.setQP                                                ( m_iQP );
 	m_cGvcEnc.setPad                                               ( m_aiPad );
 	m_cGvcEnc.setChromaFormat                                      ( m_chromaFormat  );
@@ -118,7 +117,7 @@ void GvcEncoderApp::xCreateLib()
 {
 	// Video I/O
 	int noBitDepthShift[2];
-	noBitDepthShift[0] = noBitDepthShift[1] = 0;
+	noBitDepthShift[0] = noBitDepthShift[1] = 8;
 	m_cTVideoIOYuvInputFile.open( m_inputFileName,     false, m_bitDepth, noBitDepthShift, m_bitDepth );  // read  mode
 	//m_cTVideoIOYuvInputFile.skipFrames(m_FrameSkip, m_iSourceWidth - m_aiPad[0], m_iSourceHeight - m_aiPad[1], m_InputChromaFormatIDC);
 	if (!m_reconFileName.empty())

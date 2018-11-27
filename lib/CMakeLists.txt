@@ -11,7 +11,6 @@ SET(GVC_LIB_SRCS
   GvcEncoder.cpp
   GvcLogger.cpp
   GvcFrameUnit.cpp
-  GvcFrameUnitYuv.cpp
   GvcBlockUnit.cpp
   TVideoIOYuv.cpp
   TComChromaFormat.cpp)

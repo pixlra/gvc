@@ -43,7 +43,7 @@
 #include <iostream>
 #include "TypeDef.h"
 
-class GvcFrameUnitYuv;
+class GvcFrameUnit;
 
 using namespace std;
 
@@ -73,14 +73,14 @@ public:
 
 
   // If fileFormat=NUM_CHROMA_FORMAT, use the format defined by pPicYuvTrueOrg
-  bool  read  ( GvcFrameUnitYuv* pPicYuv, GvcFrameUnitYuv* pPicYuvTrueOrg, const InputColourSpaceConversion ipcsc, int aiPad[2], ChromaFormat fileFormat=NUM_CHROMA_FORMAT, const bool bClipToRec709=false );     ///< read one frame with padding parameter
+  bool  read  ( GvcFrameUnit* pPicYuv, GvcFrameUnit* pPicYuvTrueOrg, const InputColourSpaceConversion ipcsc, int aiPad[2], ChromaFormat fileFormat=NUM_CHROMA_FORMAT, const bool bClipToRec709=false );     ///< read one frame with padding parameter
 
   // If fileFormat=NUM_CHROMA_FORMAT, use the format defined by pPicYuv
-  bool  write ( GvcFrameUnitYuv* pPicYuv, const InputColourSpaceConversion ipCSC, int confLeft=0, int confRight=0, int confTop=0, int confBottom=0, ChromaFormat fileFormat=NUM_CHROMA_FORMAT, const bool bClipToRec709=false );     ///< write one YUV frame with padding parameter
+  bool  write ( GvcFrameUnit* pPicYuv, const InputColourSpaceConversion ipCSC, int confLeft=0, int confRight=0, int confTop=0, int confBottom=0, ChromaFormat fileFormat=NUM_CHROMA_FORMAT, const bool bClipToRec709=false );     ///< write one YUV frame with padding parameter
 
   // If fileFormat=NUM_CHROMA_FORMAT, use the format defined by pPicYuvTop and pPicYuvBottom
-  bool  write ( GvcFrameUnitYuv* pPicYuvTop, GvcFrameUnitYuv* pPicYuvBottom, const InputColourSpaceConversion ipCSC, int confLeft=0, int confRight=0, int confTop=0, int confBottom=0, ChromaFormat fileFormat=NUM_CHROMA_FORMAT, const bool isTff=false, const bool bClipToRec709=false);
-  static void ColourSpaceConvert(const GvcFrameUnitYuv &src, GvcFrameUnitYuv &dest, const InputColourSpaceConversion conversion, bool bIsForwards);
+  bool  write ( GvcFrameUnit* pPicYuvTop, GvcFrameUnit* pPicYuvBottom, const InputColourSpaceConversion ipCSC, int confLeft=0, int confRight=0, int confTop=0, int confBottom=0, ChromaFormat fileFormat=NUM_CHROMA_FORMAT, const bool isTff=false, const bool bClipToRec709=false);
+  static void ColourSpaceConvert(const GvcFrameUnit &src, GvcFrameUnit &dest, const InputColourSpaceConversion conversion, bool bIsForwards);
 
   bool  isEof ();                                           ///< check for end-of-file
   bool  isFail();                                           ///< check for failure

@@ -43,9 +43,9 @@
 #include <iostream>
 #include <memory.h>
 
+#include "GvcFrameUnit.h"
 #include "TVideoIOYuv.h"
 #include "TypeDef.h"
-#include "GvcFrameUnitYuv.h"
 
 using namespace std;
 
@@ -96,7 +96,7 @@ static void scalePlane(short* img, const unsigned int stride, const unsigned int
 }
 
 static void
-copyPlane(const GvcFrameUnitYuv &src, const ComponentID srcPlane, GvcFrameUnitYuv &dest, const ComponentID destPlane);
+copyPlane(const GvcFrameUnit &src, const ComponentID srcPlane, GvcFrameUnit &dest, const ComponentID destPlane);
 
 // ====================================================================================================================
 // Public member functions
@@ -673,14 +673,14 @@ static bool writeField(ostream& fd, short* top, short* bottom, bool is16bit,
  * @param format           chroma format
  * @return true for success, false in case of error
  */
-bool TVideoIOYuv::read ( GvcFrameUnitYuv*  pPicYuvUser, GvcFrameUnitYuv* pPicYuvTrueOrg, const InputColourSpaceConversion ipcsc, int aiPad[2], ChromaFormat format, const bool bClipToRec709 )
+bool TVideoIOYuv::read ( GvcFrameUnit*  pPicYuvUser, GvcFrameUnit* pPicYuvTrueOrg, const InputColourSpaceConversion ipcsc, int aiPad[2], ChromaFormat format, const bool bClipToRec709 )
 {
   // check end-of-file
   if ( isEof() )
   {
     return false;
   }
-  GvcFrameUnitYuv *pPicYuv=pPicYuvTrueOrg;
+  GvcFrameUnit *pPicYuv=pPicYuvTrueOrg;
   if (format>=NUM_CHROMA_FORMAT)
   {
     format=pPicYuv->getChromaFormat();
@@ -750,15 +750,15 @@ bool TVideoIOYuv::read ( GvcFrameUnitYuv*  pPicYuvUser, GvcFrameUnitYuv* pPicYuv
  * @param format           chroma format
  * @return true for success, false in case of error
  */
-bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUser, const InputColourSpaceConversion ipCSC, int confLeft, int confRight, int confTop, int confBottom, ChromaFormat format, const bool bClipToRec709 )
+bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUser, const InputColourSpaceConversion ipCSC, int confLeft, int confRight, int confTop, int confBottom, ChromaFormat format, const bool bClipToRec709 )
 {
-  GvcFrameUnitYuv cPicYuvCSCd;
+  GvcFrameUnit cPicYuvCSCd;
   if (ipCSC!=IPCOLOURSPACE_UNCHANGED)
   {
     cPicYuvCSCd.createWithoutCUInfo(pPicYuvUser->getWidth(COMPONENT_Y), pPicYuvUser->getHeight(COMPONENT_Y), pPicYuvUser->getChromaFormat() );
     ColourSpaceConvert(*pPicYuvUser, cPicYuvCSCd, ipCSC, false);
   }
-  GvcFrameUnitYuv *pPicYuv=(ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUser : &cPicYuvCSCd;
+  GvcFrameUnit *pPicYuv=(ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUser : &cPicYuvCSCd;
 
   // compute actual YUV frame size excluding padding size
   bool is16bit = false;
@@ -776,7 +776,7 @@ bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUser, const InputColourSpaceCon
     }
   }
 
-  GvcFrameUnitYuv *dstPicYuv = NULL;
+  GvcFrameUnit *dstPicYuv = NULL;
   bool retval = true;
   if (format>=NUM_CHROMA_FORMAT)
   {
@@ -785,7 +785,7 @@ bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUser, const InputColourSpaceCon
 
   if (nonZeroBitDepthShift)
   {
-    dstPicYuv = new GvcFrameUnitYuv;
+    dstPicYuv = new GvcFrameUnit;
     dstPicYuv->createWithoutCUInfo( pPicYuv->getWidth(COMPONENT_Y), pPicYuv->getHeight(COMPONENT_Y), pPicYuv->getChromaFormat() );
 
     for(unsigned int comp=0; comp<dstPicYuv->getNumberValidComponents(); comp++)
@@ -838,11 +838,11 @@ bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUser, const InputColourSpaceCon
   return retval;
 }
 
-bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUserTop, GvcFrameUnitYuv* pPicYuvUserBottom, const InputColourSpaceConversion ipCSC, int confLeft, int confRight, int confTop, int confBottom, ChromaFormat format, const bool isTff, const bool bClipToRec709 )
+bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUserTop, GvcFrameUnit* pPicYuvUserBottom, const InputColourSpaceConversion ipCSC, int confLeft, int confRight, int confTop, int confBottom, ChromaFormat format, const bool isTff, const bool bClipToRec709 )
 {
 
-  GvcFrameUnitYuv cPicYuvTopCSCd;
-  GvcFrameUnitYuv cPicYuvBottomCSCd;
+  GvcFrameUnit cPicYuvTopCSCd;
+  GvcFrameUnit cPicYuvBottomCSCd;
   if (ipCSC!=IPCOLOURSPACE_UNCHANGED)
   {
     cPicYuvTopCSCd   .createWithoutCUInfo(pPicYuvUserTop   ->getWidth(COMPONENT_Y), pPicYuvUserTop   ->getHeight(COMPONENT_Y), pPicYuvUserTop   ->getChromaFormat() );
@@ -850,8 +850,8 @@ bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUserTop, GvcFrameUnitYuv* pPicY
     ColourSpaceConvert(*pPicYuvUserTop,    cPicYuvTopCSCd,    ipCSC, false);
     ColourSpaceConvert(*pPicYuvUserBottom, cPicYuvBottomCSCd, ipCSC, false);
   }
-  GvcFrameUnitYuv *pPicYuvTop    = (ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUserTop    : &cPicYuvTopCSCd;
-  GvcFrameUnitYuv *pPicYuvBottom = (ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUserBottom : &cPicYuvBottomCSCd;
+  GvcFrameUnit *pPicYuvTop    = (ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUserTop    : &cPicYuvTopCSCd;
+  GvcFrameUnit *pPicYuvBottom = (ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUserBottom : &cPicYuvBottomCSCd;
 
   bool is16bit = false;
   bool nonZeroBitDepthShift=false;
@@ -868,23 +868,23 @@ bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUserTop, GvcFrameUnitYuv* pPicY
     }
   }
 
-  GvcFrameUnitYuv *dstPicYuvTop    = NULL;
-  GvcFrameUnitYuv *dstPicYuvBottom = NULL;
+  GvcFrameUnit *dstPicYuvTop    = NULL;
+  GvcFrameUnit *dstPicYuvBottom = NULL;
 
   for (unsigned int field = 0; field < 2; field++)
   {
-    GvcFrameUnitYuv *pPicYuv = (field == 0) ? pPicYuvTop : pPicYuvBottom;
+    GvcFrameUnit *pPicYuv = (field == 0) ? pPicYuvTop : pPicYuvBottom;
 
     if (format>=NUM_CHROMA_FORMAT)
     {
       format=pPicYuv->getChromaFormat();
     }
 
-    GvcFrameUnitYuv* &dstPicYuv = (field == 0) ? dstPicYuvTop : dstPicYuvBottom;
+    GvcFrameUnit* &dstPicYuv = (field == 0) ? dstPicYuvTop : dstPicYuvBottom;
 
     if (nonZeroBitDepthShift)
     {
-      dstPicYuv = new GvcFrameUnitYuv;
+      dstPicYuv = new GvcFrameUnit;
       dstPicYuv->createWithoutCUInfo( pPicYuv->getWidth(COMPONENT_Y), pPicYuv->getHeight(COMPONENT_Y), pPicYuv->getChromaFormat() );
 
       for(unsigned int comp=0; comp<dstPicYuv->getNumberValidComponents(); comp++)
@@ -959,7 +959,7 @@ bool TVideoIOYuv::write( GvcFrameUnitYuv* pPicYuvUserTop, GvcFrameUnitYuv* pPicY
 }
 
 static void
-copyPlane(const GvcFrameUnitYuv &src, const ComponentID srcPlane, GvcFrameUnitYuv &dest, const ComponentID destPlane)
+copyPlane(const GvcFrameUnit &src, const ComponentID srcPlane, GvcFrameUnit &dest, const ComponentID destPlane)
 {
   const unsigned int width=src.getWidth(srcPlane);
   const unsigned int height=src.getHeight(srcPlane);
@@ -976,7 +976,7 @@ copyPlane(const GvcFrameUnitYuv &src, const ComponentID srcPlane, GvcFrameUnitYu
 }
 
 // static member
-void TVideoIOYuv::ColourSpaceConvert(const GvcFrameUnitYuv &src, GvcFrameUnitYuv &dest, const InputColourSpaceConversion conversion, bool bIsForwards)
+void TVideoIOYuv::ColourSpaceConvert(const GvcFrameUnit &src, GvcFrameUnit &dest, const InputColourSpaceConversion conversion, bool bIsForwards)
 {
   const ChromaFormat  format=src.getChromaFormat();
   const unsigned int          numValidComp=src.getNumberValidComponents();

@@ -75,7 +75,7 @@ class GvcEncoderApp
 	void  xInitLib          ();					              ///< initialize encoder class
 	void  xDestroyLib       ();                               ///< destroy encoder class
 	/// obtain required buffers
-	void xGetBuffer(GvcFrameUnitYuv*& rpcFrameYuvRec);
+	void xGetBuffer(GvcFrameUnit*& rpcFrameYuvRec);
 	/// delete allocated buffers
 	void  xDeleteBuffer     ();
 	// file I/O

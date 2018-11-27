@@ -23,7 +23,7 @@
  */
 
 #include "GvcEncoderApp.h"
-#include "GvcFrameUnitYuv.h"
+#include "GvcFrameUnit.h"
 #include "program_options_lite.h"
 
 namespace po = df::program_options_lite;
@@ -56,8 +56,8 @@ void GvcEncoderApp::encode()
 		exit(EXIT_FAILURE);
 	}
 	// Original and Recon frame
-	GvcFrameUnitYuv*       pcFrameYuvOrg = new GvcFrameUnitYuv;
-	GvcFrameUnitYuv*       pcFrameYuvRec = new GvcFrameUnitYuv;
+	GvcFrameUnit*       pcFrameYuvOrg = new GvcFrameUnit;
+	GvcFrameUnit*       pcFrameYuvRec = new GvcFrameUnit;
     // allocate original YUV buffer
     pcFrameYuvOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
     pcFrameYuvRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );

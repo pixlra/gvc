@@ -27,31 +27,63 @@ GvcFrameUnit::~GvcFrameUnit()
   destroy();
 }
 
-void GvcFrameUnit::create( ChromaFormat chromaFormatIDC, int iWidth, int iHeight, unsigned int uiMaxCuWidth, unsigned int uiMaxCuHeight, unsigned int uiMaxDepth, bool bIsVirtual)
+void GvcFrameUnit::createWithoutCUInfo ( const int picWidth,                 ///< picture width
+                                            const int picHeight,                ///< picture height
+                                            const ChromaFormat chromaFormatIDC, ///< chroma format
+                                            const unsigned int maxCUWidth,              ///< used for generating offsets to CUs.
+                                            const unsigned int maxCUHeight,             ///< used for generating offsets to CUs.
+                                            const bool bUseMargin              ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
+)
+
 {
   destroy();
 
-  if (!bIsVirtual)
+  m_picWidth          = picWidth;
+  m_picHeight         = picHeight;
+  m_chromaFormatIDC   = chromaFormatIDC;
+  m_marginX          = (bUseMargin?maxCUWidth:0) + 16;   // for 16-byte alignment
+  m_marginY          = (bUseMargin?maxCUHeight:0) + 16;  // margin for 8-tap filter and infinite padding
+
+  // assign the picture arrays and set up the ptr to the top left of the original picture
+  for(unsigned int comp=0; comp<getNumberValidComponents(); comp++)
   {
-    m_apcFrameYuv[FRAME_YUV_ORG]   = new GvcFrameUnitYuv;
-    m_apcFrameYuv[FRAME_YUV_ORG]->create( iWidth, iHeight, chromaFormatIDC, uiMaxCuWidth, uiMaxCuHeight, true );
+    const ComponentID ch=ComponentID(comp);
+    m_apiFrameBuf[comp] = (short*)xMalloc( short, getStride(ch) * getTotalHeight(ch));
+    m_piFrameOrg[comp]  = m_apiFrameBuf[comp] + (m_marginY >> getComponentScaleY(ch)) * getStride(ch) + (m_marginX >> getComponentScaleX(ch));
   }
-  m_apcFrameYuv[FRAME_YUV_REC]  = new GvcFrameUnitYuv;
-  m_apcFrameYuv[FRAME_YUV_REC]->create( iWidth, iHeight, chromaFormatIDC, uiMaxCuWidth, uiMaxCuHeight, true );
+  // initialize pointers for unused components to NULL
+  for(int comp=getNumberValidComponents();comp<MAX_NUM_COMPONENT; comp++)
+  {
+    m_apiFrameBuf[comp] = NULL;
+    m_piFrameOrg[comp]  = NULL;
+  }
+}
+
+
+void GvcFrameUnit::create ( const int picWidth,                 ///< picture width
+                               const int picHeight,                ///< picture height
+                               const ChromaFormat chromaFormatIDC, ///< chroma format
+                               const unsigned int maxCUWidth,              ///< used for generating offsets to CUs.
+                               const unsigned int maxCUHeight,             ///< used for generating offsets to CUs.
+                               const bool bUseMargin)              ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
+
+{
+  createWithoutCUInfo(picWidth, picHeight, chromaFormatIDC, maxCUWidth, maxCUHeight, bUseMargin);
+
+  const int numCuInWidth  = m_picWidth  / maxCUWidth  + (m_picWidth  % maxCUWidth  != 0);
+  const int numCuInHeight = m_picHeight / maxCUHeight + (m_picHeight % maxCUHeight != 0);
+  for(int chan=0; chan<MAX_NUM_CHANNEL_TYPE; chan++)
+  {
+    const ChannelType ch= ChannelType(chan);
+    const int ctuHeight = maxCUHeight>>getChannelTypeScaleY(ch);
+    const int ctuWidth  = maxCUWidth>>getChannelTypeScaleX(ch);
+    const int stride    = getStride(ch);
+  }
 }
 
 void GvcFrameUnit::destroy()
 {
 
-  for(unsigned int i=0; i<NUM_FRAME_YUV; i++)
-  {
-    if (m_apcFrameYuv[i])
-    {
-      m_apcFrameYuv[i]->destroy();
-      delete m_apcFrameYuv[i];
-      m_apcFrameYuv[i]  = NULL;
-    }
-  }
 }
 
 //! \}

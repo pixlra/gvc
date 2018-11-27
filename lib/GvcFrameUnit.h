@@ -26,7 +26,6 @@
 #define __GVCFRAMEUNIT__
 
 #include "TypeDef.h"
-#include "GvcFrameUnitSym.h"
 #include "GvcFrameUnitYuv.h"
 
 class GvcBlockUnit;
@@ -45,18 +44,29 @@ class GvcFrameUnit
 public:
   typedef enum { FRAME_YUV_ORG, FRAME_YUV_REC, NUM_FRAME_YUV} FRAME_YUV_T;
 private:
-  GvcFrameUnitSym            m_frameSym;                   // Symbol
   GvcFrameUnitYuv*           m_apcFrameYuv[NUM_FRAME_YUV]; // Original and Recon
   GvcFrameUnitYuv*           m_pcFrameYuvPred;           // Prediction
   GvcFrameUnitYuv*           m_pcFrameYuvResi;           // Residual
+    unsigned int          m_frameWidthInCtus;
+    unsigned int          m_frameHeightInCtus;
+
+    unsigned int          m_uiMinCUWidth;
+    unsigned int          m_uiMinCUHeight;
+
+    char                  m_uhTotalDepth;       ///< max. depth
+    unsigned int          m_numPartitionsInCtu;
+    unsigned int          m_numPartInCtuWidth;
+    unsigned int          m_numPartInCtuHeight;
+    unsigned int          m_numCtusInFrame;
+
+    GvcBlockUnit**  m_frameBUArray;        ///< array of CU data.
 public:
   GvcFrameUnit();
   virtual ~GvcFrameUnit();
   void          create(ChromaFormat chromaFormatIDC, int iWidth, int iHeight, unsigned int uiMaxCuWidth, unsigned int uiMaxCuHeight, unsigned int uiMaxDepth, bool bIsVirtual);
   virtual void  destroy();
 
-  GvcFrameUnitSym*   getFrameSym()                        { return  &m_frameSym;    }
-  GvcBlockUnit*   getBU( unsigned int ctuRsAddr )           { return  m_frameSym.getBU( ctuRsAddr ); }
+  GvcBlockUnit*   getBU( unsigned int ctuRsAddr )           { return  m_frameBUArray[ctuRsAddr]; }
 
   GvcFrameUnitYuv*   getFrameYuvOrg()        { return  m_apcFrameYuv[FRAME_YUV_ORG]; }
   GvcFrameUnitYuv*   getFrameYuvRec()        { return  m_apcFrameYuv[FRAME_YUV_REC]; }
@@ -65,14 +75,14 @@ public:
   void          setFrameYuvPred( GvcFrameUnitYuv* pcFrameYuv )       { m_pcFrameYuvPred = pcFrameYuv; }
   void          setFrameYuvResi( GvcFrameUnitYuv* pcFrameYuv )       { m_pcFrameYuvResi = pcFrameYuv; }
 
-  unsigned int          getNumberOfCtusInFrame()      { return m_frameSym.getNumberOfCtusInFrame(); }
-  unsigned int          getNumPartInCtuWidth()        { return m_frameSym.getNumPartInCtuWidth();   }
-  unsigned int          getNumPartInCtuHeight()       { return m_frameSym.getNumPartInCtuHeight();  }
-  unsigned int          getNumPartitionsInCtu()       { return m_frameSym.getNumPartitionsInCtu();  }
-  unsigned int          getFrameWidthInCtus()         { return m_frameSym.getFrameWidthInCtus();    }
-  unsigned int          getFrameHeightInCtus()        { return m_frameSym.getFrameHeightInCtus();   }
-  unsigned int          getMinCUWidth()               { return m_frameSym.getMinCUWidth();          }
-  unsigned int          getMinCUHeight()              { return m_frameSym.getMinCUHeight();         }
+  unsigned int          getNumberOfCtusInFrame()      { return getNumberOfCtusInFrame(); }
+  unsigned int          getNumPartInCtuWidth()        { return getNumPartInCtuWidth();   }
+  unsigned int          getNumPartInCtuHeight()       { return getNumPartInCtuHeight();  }
+  unsigned int          getNumPartitionsInCtu()       { return getNumPartitionsInCtu();  }
+  unsigned int          getFrameWidthInCtus()         { return getFrameWidthInCtus();    }
+  unsigned int          getFrameHeightInCtus()        { return getFrameHeightInCtus();   }
+  unsigned int          getMinCUWidth()               { return getMinCUWidth();          }
+  unsigned int          getMinCUHeight()              { return getMinCUHeight();         }
 
   int           getStride( ComponentID id)           { return m_apcFrameYuv[FRAME_YUV_REC]->getStride(id); }
   int           getComponentScaleX( ComponentID id)     { return m_apcFrameYuv[FRAME_YUV_REC]->getComponentScaleX(id); }

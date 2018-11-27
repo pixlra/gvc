@@ -31,7 +31,6 @@ void GvcFrameUnit::create( ChromaFormat chromaFormatIDC, int iWidth, int iHeight
 {
   destroy();
 
-  m_frameSym.create( chromaFormatIDC, iWidth, iHeight, uiMaxCuWidth, uiMaxCuHeight, uiMaxDepth );
   if (!bIsVirtual)
   {
     m_apcFrameYuv[FRAME_YUV_ORG]   = new GvcFrameUnitYuv;
@@ -43,7 +42,6 @@ void GvcFrameUnit::create( ChromaFormat chromaFormatIDC, int iWidth, int iHeight
 
 void GvcFrameUnit::destroy()
 {
-  m_frameSym.destroy();
 
   for(unsigned int i=0; i<NUM_FRAME_YUV; i++)
   {

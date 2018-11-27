@@ -34,7 +34,4 @@ GvcEncoder::~GvcEncoder()
 
 void GvcEncoder::create()
 {
-    // create processing unit classes
-    m_cFrameUnitEncoder.create( getSourceWidth(), getSourceHeight(), m_chromaFormat, m_maxBUWidth, m_maxBUHeight, m_maxTotalBUDepth );
-    m_cBlockUnitEncoder.create( m_maxTotalBUDepth, m_maxBUWidth, m_maxBUHeight, m_chromaFormat );
 }

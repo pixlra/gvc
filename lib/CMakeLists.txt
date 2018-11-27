@@ -9,8 +9,6 @@ INCLUDE_DIRECTORIES(
 
 SET(GVC_LIB_SRCS
   GvcEncoder.cpp
-  GvcEncBlockUnit.cpp
-  GvcEncFrameUnit.cpp
   GvcLogger.cpp
   GvcFrameUnit.cpp
   GvcFrameUnitYuv.cpp

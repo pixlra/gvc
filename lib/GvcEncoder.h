@@ -26,8 +26,6 @@
 #define __GVCENCODER_H__
 
 #include "TypeDef.h"
-#include "GvcEncFrameUnit.h"
-#include "GvcEncBlockUnit.h"
 
 /**
  * \class    GvcEncoder
@@ -45,8 +43,6 @@ class GvcEncoder
 	unsigned int m_maxTotalBUDepth;
 	ChromaFormat m_chromaFormat;
 	int m_bitDepth[MAX_NUM_CHANNEL_TYPE];
-	GvcEncBlockUnit m_cBlockUnitEncoder;
-    GvcEncFrameUnit m_cFrameUnitEncoder;
 
   public:
 	GvcEncoder();

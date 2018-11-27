@@ -724,7 +724,7 @@ bool TVideoIOYuv::read ( GvcFrameUnit*  pPicYuvUser, GvcFrameUnit* pPicYuvTrueOr
       return false;
     }
 
-    if (compID < pPicYuv->getNumberValidComponents() )
+    if (compID < MAX_NUM_COMPONENT )
     {
       const unsigned int csx=getComponentScaleX(compID, pPicYuv->getChromaFormat());
       const unsigned int csy=getComponentScaleY(compID, pPicYuv->getChromaFormat());
@@ -755,8 +755,8 @@ bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUser, const InputColourSpaceConver
   GvcFrameUnit cPicYuvCSCd;
   if (ipCSC!=IPCOLOURSPACE_UNCHANGED)
   {
-    cPicYuvCSCd.createWithoutCUInfo(pPicYuvUser->getWidth(COMPONENT_Y), pPicYuvUser->getHeight(COMPONENT_Y), pPicYuvUser->getChromaFormat() );
-    ColourSpaceConvert(*pPicYuvUser, cPicYuvCSCd, ipCSC, false);
+    //cPicYuvCSCd.createWithoutCUInfo(pPicYuvUser->getWidth(COMPONENT_Y), pPicYuvUser->getHeight(COMPONENT_Y), pPicYuvUser->getChromaFormat() );
+    //ColourSpaceConvert(*pPicYuvUser, cPicYuvCSCd, ipCSC, false);
   }
   GvcFrameUnit *pPicYuv=(ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUser : &cPicYuvCSCd;
 
@@ -785,20 +785,20 @@ bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUser, const InputColourSpaceConver
 
   if (nonZeroBitDepthShift)
   {
-    dstPicYuv = new GvcFrameUnit;
+    /*dstPicYuv = new GvcFrameUnit;
     dstPicYuv->createWithoutCUInfo( pPicYuv->getWidth(COMPONENT_Y), pPicYuv->getHeight(COMPONENT_Y), pPicYuv->getChromaFormat() );
 
     for(unsigned int comp=0; comp<dstPicYuv->getNumberValidComponents(); comp++)
     {
       const ComponentID compID=ComponentID(comp);
       const ChannelType ch=toChannelType(compID);
-      const bool b709Compliance = bClipToRec709 && (-m_bitdepthShift[ch] < 0 && m_MSBExtendedBitDepth[ch] >= 8);     /* ITU-R BT.709 compliant clipping for converting say 10b to 8b */
+      const bool b709Compliance = bClipToRec709 && (-m_bitdepthShift[ch] < 0 && m_MSBExtendedBitDepth[ch] >= 8);     // ITU-R BT.709 compliant clipping for converting say 10b to 8b
       const short minval = b709Compliance? ((   1 << (m_MSBExtendedBitDepth[ch] - 8))   ) : 0;
       const short maxval = b709Compliance? ((0xff << (m_MSBExtendedBitDepth[ch] - 8)) -1) : (1 << m_MSBExtendedBitDepth[ch]) - 1;
 
       copyPlane(*pPicYuv, compID, *dstPicYuv, compID);
       scalePlane(dstPicYuv->getAddr(compID), dstPicYuv->getStride(compID), dstPicYuv->getWidth(compID), dstPicYuv->getHeight(compID), -m_bitdepthShift[ch], minval, maxval);
-    }
+    }*/
   }
   else
   {
@@ -814,7 +814,7 @@ bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUser, const InputColourSpaceConver
     printf ("\nWarning: writing %d x %d luma sample output picture!", width444, height444);
   }
 
-  for(unsigned int comp=0; retval && comp<dstPicYuv->getNumberValidComponents(); comp++)
+  for(unsigned int comp=0; retval && comp<MAX_NUM_COMPONENT; comp++)
   {
     const ComponentID compID = ComponentID(comp);
     const ChannelType ch=toChannelType(compID);
@@ -845,10 +845,10 @@ bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUserTop, GvcFrameUnit* pPicYuvUser
   GvcFrameUnit cPicYuvBottomCSCd;
   if (ipCSC!=IPCOLOURSPACE_UNCHANGED)
   {
-    cPicYuvTopCSCd   .createWithoutCUInfo(pPicYuvUserTop   ->getWidth(COMPONENT_Y), pPicYuvUserTop   ->getHeight(COMPONENT_Y), pPicYuvUserTop   ->getChromaFormat() );
+   /* cPicYuvTopCSCd   .createWithoutCUInfo(pPicYuvUserTop   ->getWidth(COMPONENT_Y), pPicYuvUserTop   ->getHeight(COMPONENT_Y), pPicYuvUserTop   ->getChromaFormat() );
     cPicYuvBottomCSCd.createWithoutCUInfo(pPicYuvUserBottom->getWidth(COMPONENT_Y), pPicYuvUserBottom->getHeight(COMPONENT_Y), pPicYuvUserBottom->getChromaFormat() );
     ColourSpaceConvert(*pPicYuvUserTop,    cPicYuvTopCSCd,    ipCSC, false);
-    ColourSpaceConvert(*pPicYuvUserBottom, cPicYuvBottomCSCd, ipCSC, false);
+    ColourSpaceConvert(*pPicYuvUserBottom, cPicYuvBottomCSCd, ipCSC, false);*/
   }
   GvcFrameUnit *pPicYuvTop    = (ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUserTop    : &cPicYuvTopCSCd;
   GvcFrameUnit *pPicYuvBottom = (ipCSC==IPCOLOURSPACE_UNCHANGED) ? pPicYuvUserBottom : &cPicYuvBottomCSCd;
@@ -884,20 +884,20 @@ bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUserTop, GvcFrameUnit* pPicYuvUser
 
     if (nonZeroBitDepthShift)
     {
-      dstPicYuv = new GvcFrameUnit;
+      /*dstPicYuv = new GvcFrameUnit;
       dstPicYuv->createWithoutCUInfo( pPicYuv->getWidth(COMPONENT_Y), pPicYuv->getHeight(COMPONENT_Y), pPicYuv->getChromaFormat() );
 
       for(unsigned int comp=0; comp<dstPicYuv->getNumberValidComponents(); comp++)
       {
         const ComponentID compID=ComponentID(comp);
         const ChannelType ch=toChannelType(compID);
-        const bool b709Compliance=bClipToRec709 && (-m_bitdepthShift[ch] < 0 && m_MSBExtendedBitDepth[ch] >= 8);     /* ITU-R BT.709 compliant clipping for converting say 10b to 8b */
+        const bool b709Compliance=bClipToRec709 && (-m_bitdepthShift[ch] < 0 && m_MSBExtendedBitDepth[ch] >= 8);     // ITU-R BT.709 compliant clipping for converting say 10b to 8b
         const short minval = b709Compliance? ((   1 << (m_MSBExtendedBitDepth[ch] - 8))   ) : 0;
         const short maxval = b709Compliance? ((0xff << (m_MSBExtendedBitDepth[ch] - 8)) -1) : (1 << m_MSBExtendedBitDepth[ch]) - 1;
 
         copyPlane(*pPicYuv, compID, *dstPicYuv, compID);
         scalePlane(dstPicYuv->getAddr(compID), dstPicYuv->getStride(compID), dstPicYuv->getWidth(compID), dstPicYuv->getHeight(compID), -m_bitdepthShift[ch], minval, maxval);
-      }
+      }*/
     }
     else
     {
@@ -907,10 +907,10 @@ bool TVideoIOYuv::write( GvcFrameUnit* pPicYuvUserTop, GvcFrameUnit* pPicYuvUser
 
   bool retval = true;
 
-  assert(dstPicYuvTop->getNumberValidComponents() == dstPicYuvBottom->getNumberValidComponents());
+  //assert(dstPicYuvTop->getNumberValidComponents() == dstPicYuvBottom->getNumberValidComponents());
   assert(dstPicYuvTop->getChromaFormat()          == dstPicYuvBottom->getChromaFormat()         );
 
-  for(unsigned int comp=0; retval && comp<dstPicYuvTop->getNumberValidComponents(); comp++)
+  for(unsigned int comp=0; retval && MAX_NUM_COMPONENT; comp++)
   {
     const ComponentID compID = ComponentID(comp);
     const ChannelType ch=toChannelType(compID);
@@ -979,7 +979,7 @@ copyPlane(const GvcFrameUnit &src, const ComponentID srcPlane, GvcFrameUnit &des
 void TVideoIOYuv::ColourSpaceConvert(const GvcFrameUnit &src, GvcFrameUnit &dest, const InputColourSpaceConversion conversion, bool bIsForwards)
 {
   const ChromaFormat  format=src.getChromaFormat();
-  const unsigned int          numValidComp=src.getNumberValidComponents();
+  const unsigned int          numValidComp=MAX_NUM_COMPONENT;
 
   switch (conversion)
   {

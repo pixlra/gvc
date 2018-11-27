@@ -56,11 +56,11 @@ void GvcEncoderApp::encode()
 		exit(EXIT_FAILURE);
 	}
 	// Original and Recon frame
-	GvcFrameUnit*       pcFrameYuvOrg = new GvcFrameUnit;
-	GvcFrameUnit*       pcFrameYuvRec = new GvcFrameUnit;
+	GvcFrameUnit*       pcFrameOrg = new GvcFrameUnit;
+	GvcFrameUnit*       pcFrameRec = new GvcFrameUnit;
     // allocate original YUV buffer
-    pcFrameYuvOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
-    pcFrameYuvRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
+    pcFrameOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
+    pcFrameRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
 	// initialize internal class & member variables
 	xInitLibCfg();
 	xCreateLib();
@@ -69,26 +69,26 @@ void GvcEncoderApp::encode()
 	while ( m_iFrameRcvd != m_framesToBeEncoded )
 	{
 		// read input YUV file
-		m_cTVideoIOYuvInputFile.read( pcFrameYuvOrg, pcFrameYuvOrg, IPCOLOURSPACE_UNCHANGED, m_aiPad, m_chromaFormat, false );
+		m_cTVideoIOYuvInputFile.read( pcFrameOrg, pcFrameOrg, IPCOLOURSPACE_UNCHANGED, m_aiPad, m_chromaFormat, false );
 		// increase number of received frames
 		m_iFrameRcvd++;
 		// if end of file (which is only detected on a read failure) flush the encoder of any queued pictures
 		// call encoding function for one frame
 		//m_cGvcEnc.encode( bEos, flush ? 0 : pcFrameYuvOrg, &cFrameYuvTrueOrg, iNumEncoded); // TODO: Add to GvcEncoder
 		// write bistream to file if necessary
-		m_cTVideoIOYuvReconFile.write( pcFrameYuvRec, IPCOLOURSPACE_UNCHANGED, 0, 0, 0, 0, NUM_CHROMA_FORMAT, false  );
+		m_cTVideoIOYuvReconFile.write( pcFrameRec, IPCOLOURSPACE_UNCHANGED, 0, 0, 0, 0, NUM_CHROMA_FORMAT, false  );
 	}
 	//m_cGvcEnc.printSummary(false); // TODO: Add to GvcEncoder
 	// delete original YUV buffer
-	pcFrameYuvOrg->destroy();
-	delete pcFrameYuvOrg;
-	pcFrameYuvOrg = NULL;
+	pcFrameOrg->destroy();
+	delete pcFrameOrg;
+	pcFrameOrg = NULL;
 	// delete used buffers in encoder class
 	//m_cGvcEnc.deletePicBuffer(); // TODO: Add to GvcEncoder
 	//cFrameYuvTrueOrg.destroy();
-	pcFrameYuvRec->destroy();
-	delete pcFrameYuvRec;
-	pcFrameYuvRec = NULL;
+	pcFrameRec->destroy();
+	delete pcFrameRec;
+	pcFrameRec = NULL;
 	// delete buffers & classes
 	xDestroyLib();
 	printf("Bytes written to file: %u\n", m_totalBytes);

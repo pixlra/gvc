@@ -69,9 +69,6 @@ public:
 
   void skipFrames(unsigned int numFrames, unsigned int width, unsigned int height, ChromaFormat format);
 
-  // if fileFormat<NUM_CHROMA_FORMAT, the format of the file is that format specified, else it is the format of the GvcFrameUnitYuv.
-
-
   // If fileFormat=NUM_CHROMA_FORMAT, use the format defined by pPicYuvTrueOrg
   bool  read  ( GvcFrameUnit* pPicYuv, GvcFrameUnit* pPicYuvTrueOrg, const InputColourSpaceConversion ipcsc, int aiPad[2], ChromaFormat fileFormat=NUM_CHROMA_FORMAT, const bool bClipToRec709=false );     ///< read one frame with padding parameter
 

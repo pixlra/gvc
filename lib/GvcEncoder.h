@@ -74,7 +74,7 @@ class GvcEncoder
     GvcFrameUnit* getFrameRec() { return m_pcFrameRec; }
     void setFrameRec(GvcFrameUnit* frame) { m_pcFrameRec = frame; }
 	void      create();
-	void      encode();
+	void      encode(GvcFrameUnit* pcFrameOrg, GvcFrameUnit* pcFrameRec);
 	void      encodeFrameUnit();
 	void      encodeBlockUnit();
 };

@@ -61,9 +61,6 @@ void GvcEncoderApp::encode()
     // allocate original YUV buffer
     pcFrameOrg->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
     pcFrameRec->create( m_iSourceWidth, m_iSourceHeight, m_chromaFormat, m_uiMaxBUWidth, m_uiMaxBUHeight, true );
-	m_cGvcEnc.setFrameOrg( pcFrameOrg );
-	m_cGvcEnc.setFrameRec( pcFrameRec );
-
 	// initialize internal class & member variables
 	xInitLibCfg();
 	xCreateLib();
@@ -73,8 +70,8 @@ void GvcEncoderApp::encode()
 	{
 		m_cTVideoIOYuvInputFile.read( pcFrameOrg, pcFrameOrg, IPCOLOURSPACE_UNCHANGED, m_aiPad, m_chromaFormat, false );
 		m_iFrameRcvd++;
-		m_cGvcEnc.encode();
-		m_cTVideoIOYuvReconFile.write( m_cGvcEnc.getFrameRec(), IPCOLOURSPACE_UNCHANGED, 0, 0, 0, 0, NUM_CHROMA_FORMAT, false  );
+		m_cGvcEnc.encode(pcFrameOrg, pcFrameRec);
+		m_cTVideoIOYuvReconFile.write( pcFrameRec, IPCOLOURSPACE_UNCHANGED, 0, 0, 0, 0, NUM_CHROMA_FORMAT, false  );
 	}
 	//m_cGvcEnc.printSummary(false); // TODO: Add to GvcEncoder
 	// delete original YUV buffer

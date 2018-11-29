@@ -8,7 +8,6 @@
 #include "TypeDef.h"
 
 class GvcFrameUnit;
-
 class GvcBlockUnit
 {
 private:

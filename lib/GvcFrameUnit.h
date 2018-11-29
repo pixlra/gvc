@@ -28,8 +28,6 @@
 #include "TypeDef.h"
 #include "TComChromaFormat.h"
 
-class GvcBlockUnit;
-
 //! \ingroup TLibCommon
 //! \{
 
@@ -38,53 +36,50 @@ class GvcBlockUnit;
 // ====================================================================================================================
 
 /// picture class (symbol + YUV buffers)
-
+class GvcBlockUnit;
 class GvcFrameUnit
 {
-public:
-  typedef enum { FRAME_YUV_ORG, FRAME_YUV_REC, NUM_FRAME_YUV} FRAME_YUV_T;
 private:
-    GvcBlockUnit**  m_frameBUArray;        ///< array of CU data.
-    short*  m_apiFrameBuf[MAX_NUM_COMPONENT];             ///< Buffer (including margin)
-    short*  m_piFrameOrg[MAX_NUM_COMPONENT];              ///< m_apiPicBufY + m_iMarginLuma*getStride() + m_iMarginLuma
-    int   m_picWidth;                                 ///< Width of picture in pixels
-    int   m_picHeight;                                ///< Height of picture in pixels
-    ChromaFormat m_chromaFormatIDC;                   ///< Chroma Format
-    int   m_marginX;                                  ///< margin of Luma channel (chroma's may be smaller, depending on ratio)
-    int   m_marginY;                                  ///< margin of Luma channel (chroma's may be smaller, depending on ratio)
+    GvcBlockUnit**  m_apBU;                               ///< array of CU data.
+    short*  m_apsFrameBuf[MAX_NUM_COMPONENT];             ///< Buffer (including margin)
+    short*  m_apsFrameOrg[MAX_NUM_COMPONENT];             ///< m_apiPicBufY + m_iMarginLuma*getStride() + m_iMarginLuma
+    int   m_iFrameWidth;                                  ///< Width of picture in pixels
+    int   m_iFrameHeight;                                 ///< Height of picture in pixels
+    int   m_iFrameWidthInBUs;
+    int   m_iFrameHeightInBUs;
+    int   m_iMarginX;                                     ///< margin of Luma channel (chroma's may be smaller, depending on ratio)
+    int   m_iMarginY;                                     ///< margin of Luma channel (chroma's may be smaller, depending on ratio)
+    int   m_iMinBUWidth;
+    int   m_iMinBUHeight;
+    int   m_iMaxBUWidth;
+    int   m_iMaxBUHeight;
+    int   m_iMaxDepth;
+    int   m_iNumBUsInFrame;
+    ChromaFormat m_chromaFormatIDC;                       ///< Chroma Format
+
 public:
-  GvcFrameUnit();
-  virtual ~GvcFrameUnit();
-    void          create            (const int picWidth,
-                                     const int picHeight,
-                                     const ChromaFormat chromaFormatIDC,
-                                     const unsigned int maxCUWidth=0,  ///< used for generating offsets to CUs.
-                                     const unsigned int maxCUHeight=0, ///< used for generating offsets to CUs.
-                                     const bool bUseMargin=false);   ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
-  virtual void  destroy();
-
-  GvcBlockUnit*   getBU( unsigned int ctuRsAddr )           { return  m_frameBUArray[ctuRsAddr]; }
-
-    int           getWidth          (const ComponentID id) const { return  m_picWidth >> getComponentScaleX(id);   }
-    int           getHeight         (const ComponentID id) const { return  m_picHeight >> getComponentScaleY(id);  }
+    GvcFrameUnit();
+    virtual ~GvcFrameUnit();
+    virtual void  destroy();
+    void          create            (const int picWidth, const int picHeight, const ChromaFormat chromaFormatIDC, const unsigned int maxCUWidth=0, const unsigned int maxCUHeight=0, const bool bUseMargin=false);   ///< if true, then a margin of uiMaxCUWidth+16 and uiMaxCUHeight+16 is created around the image.
+    GvcBlockUnit*   getBU( unsigned int buRsAddr ) { return  m_apBU[buRsAddr]; }
+    int           getWidth          (const ComponentID id) const { return  m_iFrameWidth >> getComponentScaleX(id);   }
+    int           getHeight         (const ComponentID id) const { return  m_iFrameHeight >> getComponentScaleY(id);  }
+    int           getTotalHeight    (const ComponentID id) const { return ((m_iFrameHeight    ) + (m_iMarginY  <<1)) >> getComponentScaleY(id); } /// height + margin Y * 2
     ChromaFormat  getChromaFormat   ()                     const { return m_chromaFormatIDC; }
-    int           getStride         (const ComponentID id) const { return ((m_picWidth     ) + (m_marginX  <<1)) >> getComponentScaleX(id); }
-    int           getStride         (const ChannelType id) const { return ((m_picWidth     ) + (m_marginX  <<1)) >> getChannelTypeScaleX(id); }
-    int           getTotalHeight    (const ComponentID id) const { return ((m_picHeight    ) + (m_marginY  <<1)) >> getComponentScaleY(id); }
-    int           getMarginX        (const ComponentID id) const { return m_marginX >> getComponentScaleX(id);  }
-    int           getMarginY        (const ComponentID id) const { return m_marginY >> getComponentScaleY(id);  }
+    int           getStride         (const ComponentID id) const { return ((m_iFrameWidth) + (m_iMarginX  <<1)) >> getComponentScaleX(id); }
+    int           getMarginX        (const ComponentID id) const { return m_iMarginX >> getComponentScaleX(id);  }
+    int           getMarginY        (const ComponentID id) const { return m_iMarginY >> getComponentScaleY(id);  }
     unsigned int          getComponentScaleX(const ComponentID id) const { return ::getComponentScaleX(id, m_chromaFormatIDC); }
     unsigned int          getComponentScaleY(const ComponentID id) const { return ::getComponentScaleY(id, m_chromaFormatIDC); }
     unsigned int          getChannelTypeScaleX(const ChannelType id) const { return ::getChannelTypeScaleX(id, m_chromaFormatIDC); }
     unsigned int          getChannelTypeScaleY(const ChannelType id) const { return ::getChannelTypeScaleY(id, m_chromaFormatIDC); }
-
     //  Access starting position of picture buffer with margin
-    short*          getBuf            (const ComponentID ch)       { return  m_apiFrameBuf[ch];   }
-    const short*    getBuf            (const ComponentID ch) const { return  m_apiFrameBuf[ch];   }
-
+    short*          getBuf            (const ComponentID ch)       { return  m_apsFrameBuf[ch];   }
+    const short*    getBuf            (const ComponentID ch) const { return  m_apsFrameBuf[ch];   }
     //  Access starting position of original picture
-    short*          getAddr           (const ComponentID ch)       { return  m_piFrameOrg[ch];   }
-    const short*    getAddr           (const ComponentID ch) const { return  m_piFrameOrg[ch];   }
+    short*          getAddr           (const ComponentID ch)       { return  m_apsFrameOrg[ch];   }
+    const short*    getAddr           (const ComponentID ch) const { return  m_apsFrameOrg[ch];   }
 };// END CLASS DEFINITION GvcFrameUnit
 
 //! \}
